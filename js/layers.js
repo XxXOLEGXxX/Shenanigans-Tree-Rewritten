@@ -20,7 +20,6 @@ addLayer("s", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
 		if(hasUpgrade("s", 31)) mult = mult.div(upgradeEffect("s", 31))
-		if(hasUpgrade("s", 42)) mult = mult.div(upgradeEffect("s", 42))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -79,6 +78,7 @@ addLayer("s", {
 			description: "Boosts 3 first shenanigans upgrades based on achievements",
 			effect() {let eff = new Decimal(player.a.achievements.length).add(1).root(3)
 					  if(hasUpgrade("s", 23)) eff = eff.pow(upgradeEffect("s", 23))
+					  if(hasUpgrade("s", 42)) eff = eff.mul(upgradeEffect("s", 42))
 					  if(inChallenge("s", 12) || inChallenge("s", 22)) eff = new Decimal(1)
 					  return eff},
 			effectDisplay() {return format(this.effect())+"x"},
@@ -158,8 +158,8 @@ addLayer("s", {
 			},
 		42: {
 			title: "\"StIlL cHiLl\"",
-			description: "You decided to ease off nothing's gain and focus on shenanigans, boosting shenanigans based on bought upgrades and achievements",
-			effect() {let eff = new Decimal(player.s.upgrades.length).add(1).pow(new Decimal(player.a.achievements.length).add(1))
+			description: "You decided to ease off nothing's gain and focus on shenanigans, boosting \"Chad Manipulation\" based on bought upgrades",
+			effect() {let eff = new Decimal(player.s.upgrades.length).add(1).root(10)
 					  if(inChallenge("s", 21) || inChallenge("s", 22)) eff = new Decimal(1)
 					  return eff},
 			effectDisplay() {return "x"+format(this.effect())},
@@ -170,13 +170,13 @@ addLayer("s", {
 			title: "Tock Tock, who's knhere?",
 			description: "Unlock one more challenge",
 			unlocked() {return player.se.points.gte(3)},
-			cost: new Decimal(68)
+			cost: new Decimal(69)
 			},
 		44: {
 			title() {return hasChallenge("s", 22) ? "Joe" : "???"},
 			description() {return hasChallenge("s", 22) ? "Joe who-\nJoe Mama flips you upside down, ignores challenges and boosts \"Virgin Exponential\"'s base by tenfold" : "????????????????"},
 			unlocked() {return player.se.points.gte(3)},
-			cost: new Decimal(71)
+			cost: new Decimal(72)
 			},
 	},
 	challenges: {
@@ -207,7 +207,7 @@ addLayer("s", {
 			name: "Toe",
 			challengeDescription: "Only first 4 upgrades have effects",
 			rewardDescription: "Nothing's gain's base is increased by 60x yet again",
-			goal: new Decimal(5e79),
+			goal: new Decimal(5e80),
 			unlocked() {return hasUpgrade("s", 43)}
 		},
 	},
