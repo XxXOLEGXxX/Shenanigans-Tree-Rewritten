@@ -12,11 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "Grand opening... Or is it grand publishing?",
+	num: "0.1.1",
+	name: "Balance Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h4>v0.1.1</h4><br>
+		- Changed 14th upgrade's effects to make it feel like it actually does something<br>
+		- Due it working more effecient, the costs of later upgrades were raised to match the changes <br>
 	<h3>v0.1</h3><br>
 		- Added this, that, did some stuff there- you get the point.<br>
 		- But seriously, there's 3 "layers" in total, craptons of upgrades and challenges for v0.1.<br>
@@ -70,7 +73,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.s.points.gte(72)
+	return player.s.points.gte(73)
 }
 
 
