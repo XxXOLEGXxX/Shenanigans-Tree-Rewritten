@@ -453,7 +453,7 @@ addLayer("se", {
     }},
 	resetDescription: "Abandon your progress for ",
     color: "#94d0d8",
-    requires() {return player.se.points.gte(3) ? new Decimal(9999999) : player.se.points.gte(3) ? new Decimal(9.25) : player.se.points.gte(2) ? new Decimal(8) : new Decimal(3)}, // Can be a function that takes requirement increases into account
+    requires() {return player.se.points.gte(4) ? new Decimal(9999999) : player.se.points.gte(3) ? new Decimal(9.25) : player.se.points.gte(2) ? new Decimal(8) : new Decimal(3)}, // Can be a function that takes requirement increases into account
     resource: "square expansions", // Name of prestige currency
     baseResource: "shenanigans", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
