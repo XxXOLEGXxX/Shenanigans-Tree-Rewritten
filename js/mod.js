@@ -20,7 +20,7 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.2</h3><br>
 		- Reworked/Added Impatience Layer (2 buyables, 5 upgrades)<br>
 		- Changed "Ah yes, the Nothinginator"'s formula<br>
-		- Due the previous change, some upgrades's costs we balanced<br>
+		- Due the previous change, some of upgrades's cost were balanced<br>
 		- Achievement layer now becomes green when you get all achievements<br>
 		- Changed descriptions there and there, you know the stuff.<br>
 		- 9 more Shenanigans upgrades, 1 more Square Expansions milestone and 8 more achievements<br>
