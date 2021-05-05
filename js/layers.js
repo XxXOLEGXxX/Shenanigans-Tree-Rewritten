@@ -304,7 +304,7 @@ addLayer("a", {
 			points: new Decimal(0),
         }},
 		tabFormat: ["main-display", "blank", "blank", "achievements"],
-        color: "#E0E0E0",
+        color() {return player.a.achievements.length >= 18 ? "#77BF5F" : "#E0E0E0"},
         resource: "achievements", 
         row: "side",
         layerShown() {return true}, 
@@ -510,7 +510,7 @@ addLayer("i", {
 			  if(hasUpgrade("s", 51)) eff = eff.mul(upgradeEffect("s", 51))
 			  return eff},
 	effectDescription() {return "boosting nothing's gain by x"+format(layers.i.effect())+" and diving shenanigans's requirement by /"+format(layers.i.effect())},
-    color: "#94d0d8",
+    color: "#D00000",
     resource: "impatiences", // Name of prestige currency
     type: "none", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -609,6 +609,7 @@ addLayer("i", {
 			},
 	},
     row: 0, // Row the layer is in on the tree (0 is the first row)
+	branches: ["s"],
     layerShown(){return hasAchievement("a", 32)},
 })
 
