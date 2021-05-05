@@ -592,7 +592,7 @@ addLayer("i", {
 			cost() { return new Decimal(1).mul(new Decimal(3).pow(player.i.buyables[12])) },
 			effect() { let base = new Decimal(1.04)
 					   let eff = new Decimal(base).pow(player.i.buyables[12])
-					   if(new Decimal(player.i.buyables[12]).gte(107)) eff = new Decimal(64)
+					   if(new Decimal(player.i.buyables[12]).gte(106)) eff = new Decimal(63)
 					   return eff},
 			title: "NerfBusters",
 			display() { return "Reduces Impatience's base nerf and log, exponents Impatience-inators's base.<br/>Amount: "+formatWhole(player.i.buyables[12])+"<br/>Cost: "+format(this.cost())+" impatiences<br/>Currently: /"+format(this.effect())+" ^"+format(this.effect()) },
