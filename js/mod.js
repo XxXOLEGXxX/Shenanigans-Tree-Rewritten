@@ -12,11 +12,22 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1.1",
-	name: "Balance Update",
+	num: "0.2",
+	name: "Rebalance Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.2</h3><br>
+		- Reworked/Added Impatience Layer (2 buyables, 5 upgrades)<br>
+		- Changed "Ah yes, the Nothinginator"'s formula<br>
+		- Due the previous change, some upgrades's costs we balanced<br>
+		- Achievement layer now becomes green when you get all achievements<br>
+		- Changed descriptions there and there, you know the stuff.<br>
+		- 9 more Shenanigans upgrades, 1 more Square Expansions milestone and 8 more achievements<br>
+		- Shitton of references were poured in<br>
+		- Unnecessary amount of texts were added in<br>
+		- Fixed the bug, where challenge's effect still persist after Square Expansion reset<br>
+		- just play this mod already already omg.
 	<h4>v0.1.1</h4><br>
 		- Changed 14th upgrade's effects to make it feel like it actually does something<br>
 		- Due it working more effecient, the costs of later upgrades were raised to match the changes <br>
@@ -50,7 +61,7 @@ function getPointGen() {
 	if(hasChallenge("s", 12)) gain = gain.mul(60)
 	if(hasChallenge("s", 21)) gain = gain.mul(60)
 	if(hasChallenge("s", 22)) gain = gain.mul(60)
-	let funnyAchievementMultiplier = new Decimal(1).add(player.s.points.add(100).log(100)).add(player.se.points.add(10).log(10)).add(player.points.add(10).log(1000))
+	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(player.i.points.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
 	if(hasAchievement("a", 11)) gain = gain.mul(6)
 	if(hasAchievement("a", 13)) gain = gain.mul(funnyAchievementMultiplier)
 	if(hasUpgrade("s", 11)) gain = gain.mul(layers.s.upgrades[11].effect2()).mul(layers.s.upgrades[11].effect())
@@ -58,6 +69,9 @@ function getPointGen() {
 	if(hasUpgrade("s", 21)) gain = gain.mul(upgradeEffect("s", 21))
 	if(hasUpgrade("s", 31)) gain = gain.mul(upgradeEffect("s", 31))
 	if(hasUpgrade("s", 24) && !inChallenge("s", 21) && !inChallenge("s", 22)) gain = gain.mul(420)
+	if(hasUpgrade("s", 25) && !inChallenge("s", 12) && !inChallenge("s", 22)) gain = gain.mul(262144)
+	if(hasUpgrade("s", 55) && !inChallenge("s", 12) && !inChallenge("s", 22)) gain = gain.mul(62)
+	if(layers.i.layerShown() == true) gain = gain.mul(layers.i.effect())
 	if(gain.gte(1)) gain = gain.pow(player.se.points.add(1))
 	if(inChallenge("s", 11)) gain = gain.div(7560)
 	return gain
@@ -73,7 +87,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.s.points.gte(73)
+	return player.points.gte(1.797693134862315907729305190789e308)
 }
 
 
