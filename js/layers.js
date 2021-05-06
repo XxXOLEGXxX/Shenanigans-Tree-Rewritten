@@ -471,7 +471,7 @@ addLayer("se", {
 	milestones: {
 		0: {
 			requirementDescription: "4 sqaure expansions",
-			effectDescription: "Keeps first 4 Shenanigans upgrades on Square Sxpansion reset",
+			effectDescription: "Keeps first 4 Shenanigans upgrades on Square Expansion reset",
 			done() { return player.se.points.gte(4) }
 		}
 	},
