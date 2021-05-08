@@ -621,7 +621,7 @@ addLayer("i", {
 			}
 			},
 		12: {
-			cost() { return new Decimal(1).mul(new Decimal(3).pow(player.i.buyables[12])) },
+			cost() { return new Decimal(1.00000000000000000001).mul(new Decimal(3).pow(player.i.buyables[12])) },
 			effect() { let base = new Decimal(1.15)
 					   let eff = new Decimal(1)
 					   for (var i = 0; i < player.i.buyables[12] && i < 4; i++) {		
