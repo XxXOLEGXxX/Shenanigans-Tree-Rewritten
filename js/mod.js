@@ -12,11 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Rebalance Update",
+	num: "0.2.1",
+	name: "haha shitpost go brrrrrrrrrrrrrrrr",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.2.1</h3><br>
+		- Rebalanced early-late game<br>
+		- ???<br>
 	<h3>v0.2</h3><br>
 		- Reworked/Added Impatience Layer (2 buyables, 5 upgrades)<br>
 		- Changed "Ah yes, the Nothinginator"'s formula<br>
@@ -48,7 +51,7 @@ function getStartPoints(){
 
 // Determines if it should show points/sec
 function canGenPoints(){
-	return true
+	return player.points.lt(new Decimal(308).pentate(2))
 }
 
 // Calculate points/sec!
@@ -74,6 +77,11 @@ function getPointGen() {
 	if(layers.i.layerShown() == true) gain = gain.mul(layers.i.effect())
 	if(gain.gte(1)) gain = gain.pow(player.se.points.add(1))
 	if(inChallenge("s", 11)) gain = gain.div(7560)
+	let shitpostPower = new Decimal(69420).pow(player.s3.secretPoints.add(1).pow(player.s3.secretPoints.add(1)))
+	if(hasUpgrade("s3", 61)) shitpostPower = shitpostPower.pow(69420).pow(player.s3.topSecretPoints)
+	if(layers.s2.layerShown() == true) {for (var i = 1; i < player.s2.secretPoints; i++) {		
+										gain = gain.pow(shitpostPower)
+	}}
 	return gain
 }
 
@@ -87,7 +95,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal(2).pow(1024))
+	return player.points.gte(new Decimal(2).pow(1024)) && player["tree-tab"].points.gte(12)
 }
 
 
