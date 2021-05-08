@@ -6,6 +6,10 @@ addLayer("s", {
         unlocked: true,
 		points: new Decimal(0),
     }},
+	tabFormat: ["main-display", "prestige-button", "resource-display", "upgrades", "challenges", "blank", "buyables"],
+	update(diff) {
+		if(hasAchievement("a", 41) && player.points.gte(new Decimal(tmp.s.nextAt))) player.s.points = player.s.points.add(1)
+	},
 	resetDescription: "Compress the nothings into ",
     color: "#791C29",
     requires() {let req = new Decimal(1).mul(player.s.points.add(1).pow(player.s.points.add(1)))
@@ -291,11 +295,30 @@ addLayer("s", {
 			unlocked() {return hasUpgrade("s", 43)}
 		},
 	},
+	buyables: {
+		rows: 1,
+		cols: 1,
+		11: {
+			title: "Shenanigans 2 layer",
+			display() { return "GO ON TO THE MODFINDER AND YOU'LL BE ABLE  TO PLAY SHENANIGANS TREE 2 FOR FREE, YOU GODDAMN MOTHERFUCKER. IT'S A FUCKING TMT MOD, THEY DON'T EVEN CHARGE PEOPLE FOR IT. YOU DON'T KNOW A GODDAMN THING, IT'S FUCKING SHENANIGANS TREE 2, IT'S FREE!<br/>IT'S FREE<br/><br/>AND IT'S FUN!!!<br/><br/>Cost: IT'S FREE! IT'S FREE... FUCK!!!" },
+			canAfford() { return true },
+			buy() {
+				player.s.buyables[11] = player.s.buyables[11].add(1)
+			},
+			unlocked() {return player.points.gte(new Decimal(2).pow(1024)) && player.s.buyables[11] < 1},
+			style() { return {
+				"font-size": "24px",
+				"height": "360px",
+				"width": "600px"
+				}
+			}
+			}
+	},
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "s", description: "S: Reset for shenanigans", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
+    layerShown(){return player.points.lt(new Decimal(308).pentate(2)) || player["tree-tab"].points.gte(12)}
 })
 
 addLayer("a", {
@@ -307,12 +330,12 @@ addLayer("a", {
         color() {return player.a.achievements.length >= 18 ? "#77BF5F" : "#E0E0E0"},
         resource: "achievements", 
         row: "side",
-        layerShown() {return true}, 
+        layerShown() {return player.points.lt(new Decimal(308).pentate(2)) || player["tree-tab"].points.gte(12)}, 
         tooltip() { // Optional, tooltip displays when the layer is locked
             return ("Achievements")
         },
         achievements: {
-            rows: 3,
+            rows: 4,
             cols: 6,
             11: {
                 name: "Not dealing with this crap",
@@ -439,6 +462,14 @@ addLayer("a", {
 				unlocked() {return hasAchievement("a", 23)},
                 tooltip() {return "Get 180 shenanigans\nReward: Unlocks another Impatience buyable"}, // Shows when achievement is not completed
             },
+            41: {
+                name: "\"It was all a bad dream\"",
+                done() {return player["tree-tab"].points.gte(12)}, // This one is a freebie
+				onComplete() {player.a.points = player.a.points.add(1)
+							  player.i.points = player.i.points.add(1)},
+				unlocked() {return player["tree-tab"].points.gte(12)},
+                tooltip() {return "Get way too far and meet Holy Broly himself.\nReward: Unlocks two layers and you automatically gain shenanigans."}, // Shows when achievement is not completed
+            },
         },
     }, 
 )
@@ -471,14 +502,14 @@ addLayer("se", {
 	milestones: {
 		0: {
 			requirementDescription: "4 sqaure expansions",
-			effectDescription: "Keeps first 4 Shenanigans upgrades on Square Expansion reset",
+			effectDescription: "Keeps first 4 Shenanigans upgrades on Square Sxpansion reset",
 			done() { return player.se.points.gte(4) }
 		}
 	},
     hotkeys: [
         {key: "e", description: "E: Reset for square expansion", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return player.s.points.gte(3) || hasAchievement("a", 14)},
+    layerShown(){return ((player.s.points.gte(3) || hasAchievement("a", 14)) && player.points.lt(new Decimal(308).pentate(2))) || player["tree-tab"].points.gte(12)},
 	doReset(resettingLayer){
 		if(layers[resettingLayer].symbol == "SE") {let keep = []
 												   if(hasMilestone("se", 0)) keep = [11, 12, 21, 22]
@@ -503,7 +534,7 @@ addLayer("i", {
     }},
 	tabFormat: ["main-display", "blank", "blank", "buyables", "blank", "upgrades"],
 	update(diff) {	
-		if(player.i.buyables[11].gte(1)) player.i.points = player.i.points.add(new Decimal(diff).mul(layers.i.buyables[11].effect()))
+		if(player.i.buyables[11].gte(1) && layers.i.layerShown()) player.i.points = player.i.points.add(new Decimal(diff).mul(layers.i.buyables[11].effect()))
 	},
 	effect() {let eff = player.i.points.add(new Decimal(64).div(layers.i.buyables[12].effect())).log(new Decimal(64).div(layers.i.buyables[12].effect()))
 			  if(hasUpgrade("i", 15)) eff = eff.mul(upgradeEffect("i", 15))
@@ -547,11 +578,11 @@ addLayer("i", {
 		},
 		14: {
 			title: "CONDENSE.",
-			description: "1 Impatience-inator is as powerful as 17 Impatience-inators",
+			description: "1 Impatience-inator generates impatiences as much as as 19 Impatience-inators",
 			currencyLocation() {return player.i.buyables},
 			currencyDisplayName: "Impatience-inators",
 			currencyInternalName: 11,
-			cost: new Decimal(17),
+			cost: new Decimal(19),
 			unlocked() {return hasAchievement("a", 33)}
 		},
 		15: {
@@ -559,7 +590,7 @@ addLayer("i", {
 			description: "Shenanigans boosts Impaitence's effect after log(64)",
 			effect() { return player.s.points.add(1) },
 			effectDisplay() { return "x"+format(this.effect()) },
-			cost: new Decimal(6000000),
+			cost: new Decimal(10200000),
 			unlocked() {return hasAchievement("a", 33)}
 		},
 	},
@@ -568,13 +599,14 @@ addLayer("i", {
 		cols: 2,
 		11: {
 			cost() { return new Decimal(1).mul(2).pow(player.i.buyables[11]) },
-			effect() { let eff = new Decimal(1).mul(player.i.buyables[11]).pow(layers.i.buyables[12].effect())
+			effect() { let base = new Decimal(player.i.buyables[11])
+					   if(hasAchievement("a", 35)) base = base.mul(1.25)
+					   let eff = new Decimal(1).mul(base).pow(layers.i.buyables[12].effect())
 					   if(hasUpgrade("i", 11)) eff = eff.pow(1.5)
 					   if(hasUpgrade("i", 12)) eff = eff.mul(upgradeEffect("i", 12))
 					   if(hasUpgrade("i", 13)) eff = eff.mul(upgradeEffect("i", 13))
-					   if(hasUpgrade("i", 14)) eff = eff.mul(17)
+					   if(hasUpgrade("i", 14)) eff = eff.mul(19)
 					   if(hasUpgrade("s", 55) && !inChallenge("s", 12) && !inChallenge("s", 22)) eff = eff.mul(62)
-					   if(hasAchievement("i", 35)) eff = eff.mul(1.25)
 					   return eff},
 			title: "Impatience-inators",
 			display() { return "By demonstrating you how it works in the most boring way, it'll suck out the impatience out of your body via the Theory of Limitless Impatientonational Energy, Laws of Unremovable Impatientonational Energy and equation for how long it takes for your impatience to reach the Infinity faster than Impatience-inators will generate impatiences up to the Infinity. I hope you all can comprehend this before you leave The Shenanigans Tree: Rewritten due just how many irrelevant texts there are for a single buyable. Anyways.<br/>Amount: "+formatWhole(player.i.buyables[11])+"<br/>Cost: "+format(this.cost())+" impatiences<br/>IPS: "+format(this.effect()) },
@@ -590,12 +622,55 @@ addLayer("i", {
 			},
 		12: {
 			cost() { return new Decimal(1).mul(new Decimal(3).pow(player.i.buyables[12])) },
-			effect() { let base = new Decimal(1.04)
-					   let eff = new Decimal(base).pow(player.i.buyables[12])
-					   if(new Decimal(player.i.buyables[12]).gte(106)) eff = new Decimal(63)
+			effect() { let base = new Decimal(1.15)
+					   let eff = new Decimal(1)
+					   for (var i = 0; i < player.i.buyables[12] && i < 4; i++) {		
+					   eff = eff.mul(base)
+		               }
+					   if(player.i.buyables[12] >= 2) {base = base.root(2)
+														for (var i = 2; i < player.i.buyables[12] && i < 5; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 5) {base = base.root(1.9)
+														for (var i = 5; i < player.i.buyables[12] && i < 9; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 9) {base = base.root(1.8)
+														for (var i = 9; i < player.i.buyables[12] && i < 14; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 14) {base = base.root(1.7)
+														for (var i = 14; i < player.i.buyables[12] && i < 20; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 20) {base = base.root(1.6)
+														for (var i = 20; i < player.i.buyables[12] && i < 27; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 27) {base = base.root(1.5)
+														for (var i = 27; i < player.i.buyables[12] && i < 35; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 35) {base = base.root(1.4)
+														for (var i = 35; i < player.i.buyables[12] && i < 44; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 44) {base = base.root(1.3)
+														for (var i = 44; i < player.i.buyables[12] && i < 54; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 54) {base = base.root(1.2)
+														for (var i = 54; i < player.i.buyables[12] && i < 65; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(player.i.buyables[12] >= 65) {base = base.root(1.1)
+														for (var i = 65; i < player.i.buyables[12]; i++) {		
+														eff = eff.mul(base)
+														}}
+					   if(eff.gte(63)) eff = new Decimal(63)
 					   return eff},
 			title: "NerfBusters",
-			display() { return "Reduces Impatience's base nerf and log, exponents Impatience-inators's base.<br/>Amount: "+formatWhole(player.i.buyables[12])+"<br/>Cost: "+format(this.cost())+" impatiences<br/>Currently: /"+format(this.effect())+" ^"+format(this.effect()) },
+			display() { return "Reduces Impatience's base nerf and log, exponents Impatience-inators's base. 2th, 5th, 9th, 14th, 20th, 27th, 35th, 44th, 54th and 65th NerfBuster applies root formula (square root initially, each nerf is weaker than another.) on other NerfBusters's effect, nerfs are stackable.<br/>Amount: "+formatWhole(player.i.buyables[12])+"<br/>Cost: "+format(this.cost())+" impatiences<br/>Currently: /"+format(this.effect())+" ^"+format(this.effect()) },
 			canAfford() { return player.i.points.gte(this.cost()) },
 			buy() {
 				player.i.points = player.i.points.sub(this.cost())
@@ -610,7 +685,468 @@ addLayer("i", {
 	},
     row: 0, // Row the layer is in on the tree (0 is the first row)
 	branches: ["s"],
-    layerShown(){return hasAchievement("a", 32)},
+    layerShown(){return (hasAchievement("a", 32) && player.points.lt(new Decimal(308).pentate(2))) || player["tree-tab"].points.gte(12)},
 })
 
+addLayer("s2", {
+    name: "shenanigans", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "S2", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+		secretPoints: new Decimal(1),
+    }},
+	resetsNothing() {return true},
+	tabFormat: ["main-display", "prestige-button", "resource-display", "upgrades", "buyables"],
+    color: "#791C29",
+    requires() {return new Decimal(1)}, // Can be a function that takes requirement increases into account
+    resource: "shenanigans 2", // Name of prestige currency
+    baseResource: "shenanigans", // Name of resource prestige is based on
+    baseAmount() {return player.s.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent() {return new Decimal(1)}, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+	upgrades: {
+		rows: 5,
+		cols: 5,
+		11: {
+			title: "LET'S",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		12: {
+			title: "FUCKING",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		13: {
+			title: "GO",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		14: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		15: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		21: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		22: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		23: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		24: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		25: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		31: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		32: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		33: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		34: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		35: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		41: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		42: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		43: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		44: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		45: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		51: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		52: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		53: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		54: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+		55: {
+			title: "O",
+			description() {return "Exponents nothing's gain by 69420"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s2.secretPoints = player.s2.secretPoints.add(1)},
+			},
+	},
+	buyables: {
+		rows: 1,
+		cols: 1,
+		11: {
+			title: "Shenanigans 3 layer",
+			display() { return "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO<br/>OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" },
+			canAfford() { return true },
+			buy() {
+				player.s2.buyables[11] = player.s2.buyables[11].add(1)
+			},
+			unlocked() {return player.s2.upgrades.length >= 25 && player.s2.buyables[11] < 1},
+			style() { return {
+				"font-size": "24px",
+				"height": "360px",
+				"width": "600px"
+				}
+			}
+			}
+	},
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "x", description: "X: Reset for shenanigans 2", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+	branches: ["s"],
+    layerShown(){return player.s.buyables[11] >= 1 && player.points.lt(new Decimal(308).pentate(2)) && player["tree-tab"].points.lt(12)}
+})
 
+addLayer("s3", {
+    name: "shenanigans", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "S3", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+		secretPoints: new Decimal(1),
+		topSecretPoints: new Decimal(1),
+    }},
+	update(diff){
+		if(hasUpgrade("s3", 61)) player.s3.topSecretPoints = player.s3.topSecretPoints.add(1).pow(player.s3.topSecretPoints)
+	},
+	resetsNothing() {return true},
+	tabFormat: ["main-display", "prestige-button", "resource-display", "upgrades"],
+    color: "#791C29",
+    requires() {return new Decimal(1)}, // Can be a function that takes requirement increases into account
+    resource: "shenanigans 3", // Name of prestige currency
+    baseResource: "shenanigans 2", // Name of resource prestige is based on
+    baseAmount() {return player.s2.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent() {return new Decimal(1)}, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+	upgrades: {
+		rows: 6,
+		cols: 5,
+		11: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		12: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		13: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		14: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		15: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		21: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		22: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		23: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		24: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		25: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		31: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		32: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		33: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		34: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		35: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		41: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		42: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		43: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		44: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		45: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		51: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		52: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		53: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		54: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		55: {
+			title: "O",
+			description() {return "Shenanigans 2's upgrades has much better effect"},
+			cost: new Decimal(1),
+			onPurchase() {return player.s3.secretPoints = player.s3.secretPoints.add(1)},
+			},
+		61: {
+			title: "THE ILLEGAL UPGRADE.",
+			description() {return "Exponents whatever effect there is and itself by 69420 every tick"},
+			cost: new Decimal(1),
+			unlocked() {return player.s3.upgrades.length >= 25},
+			},
+	},
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "2", description: "2: Reset for shenanigans 3", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+	branches: ["s2"],
+    layerShown(){return player.s2.buyables[11] >= 1 && player.points.lt(new Decimal(308).pentate(2)) && player["tree-tab"].points.lt(12)}
+})
+
+addLayer("c", {
+    name: "jevile", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "C", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#94d0d8",
+    requires() {return new Decimal(308).pentate(2)}, // Can be a function that takes requirement increases into account
+    resource: "chaotic points", // Name of prestige currency
+    baseResource: "nothings", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+	branches: ["s"],
+    hotkeys: [
+        {key: "c", description: "C: Reset for Chaos", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return player["tree-tab"].points.gte(12)},
+})
+
+addLayer("t", {
+    name: "domination", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "T", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#94d0d8",
+    requires() {return new Decimal(308).pentate(2)}, // Can be a function that takes requirement increases into account
+    resource: "transcendence points", // Name of prestige currency
+    baseResource: "nothings", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+	branches: ["s"],
+    hotkeys: [
+        {key: "t", description: "T: Reset for Transcendence", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return player["tree-tab"].points.gte(12)},
+})
