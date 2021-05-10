@@ -747,7 +747,7 @@ addLayer("i", {
 					   if(eff.gte(63)) eff = new Decimal(63)
 					   return eff},
 			title: "NerfBusters",
-			display() { return player.i.buyables[11] >= 1 ? "Reduces Impatience's base nerf and log, exponents Impatience-inators's base. 2th, 5th, 9th, 14th, 20th, 27th, 35th, 44th, 54th and 65th NerfBuster applies root formula (square root initially, each nerf is weaker than another.) on other NerfBusters's effect, nerfs are stackable.<br/>Amount: "+formatWhole(player.i.buyables[12])+"<br/>Cost: "+format(this.cost())+" impatiences<br/>Currently: /"+format(this.effect())+" ^"+format(this.effect()) : "You need to buy Impatience-inator first."},
+			display() { return player.i.buyables[11] >= 1 ? "Reduces Impatience's base nerf and log, exponents Impatience-inators's base. 2nd, 5th, 9th, 14th, 20th, 27th, 35th, 44th, 54th and 65th NerfBuster applies root formula (square root initially, each nerf is weaker than another.) on other NerfBusters's effect, nerfs are stackable.<br/>Amount: "+formatWhole(player.i.buyables[12])+"<br/>Cost: "+format(this.cost())+" impatiences<br/>Currently: /"+format(this.effect())+" ^"+format(this.effect()) : "You need to buy Impatience-inator first."},
 			canAfford() { return player.i.points.gte(this.cost()) && player.i.buyables[11] >= 1 },
 			buy() {
 				player.i.points = player.i.points.sub(this.cost())
