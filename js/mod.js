@@ -22,7 +22,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- NerfBusters is now only purchasable with at least one Impatience-inator<br>
 		- Chaos and Transcendence layers are now functionable<br>
 		- Gave the name of each version and fixed the spacing in changelog<br>
-		- Achievements now has images (Wow. Much quality. Such fun.)<br><br>
+		- Achievements now has images (Wow. Much quality. Such fun.) [NOT IMPLEMENTED]<br><br>
 		What comes with those new layers:<br>
 		- A total of 12 upgrades (18 more upgrades will be added later)<br>
 		- Five more achievements (6 more achievements will be added layer)<br>
