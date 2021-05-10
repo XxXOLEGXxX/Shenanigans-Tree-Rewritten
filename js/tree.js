@@ -23,7 +23,7 @@ addLayer("tree-tab", {
 	update(diff){
 		if(player.points.gte(new Decimal(308).pentate(2))) player.tab = "none"
 	},
-    tabFormat: [["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}], ["infobox", "lore"], "buyables"],
+tabFormat: [["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}], ["infobox", "lore"], "blank", "blank", "blank", "buyables"],
 	infoboxes: {
 		lore: {
 		title() {return player["tree-tab"].points.gte(2) ? "That lazyass" : "████ █████"},
@@ -41,7 +41,7 @@ addLayer("tree-tab", {
 				player["tree-tab"].points = player["tree-tab"].points.add(1)
 				if(player["tree-tab"].points.eq(12)) {player.points = new Decimal(0)
 												      player.s.points = new Decimal(0)
-													  player.i.points = new Decimal(1)
+													  player.i.points = new Decimal(0)
 													  player.i.buyables[11] = new Decimal(0)
 													  player.i.buyables[12] = new Decimal(0)
 												      player.s.upgrades = [11, 12, 21, 22]
