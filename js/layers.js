@@ -119,6 +119,7 @@ addLayer("s", {
 			title: "Infinitish Boost",
 			description: "Boosts nothing's gain and shenanigans's requirement, but it gets weaker the closer you are to the Infniity.",
 			effect() {let eff = new Decimal(2).pow(10240).div(player.points.add(0.001).pow(9)).log(new Decimal(2).pow(1024))
+					  if(eff.lte(0.006835937500006363)) eff = new Decimal(0.006835937500006363)
 					  if(hasMilestone("t", 0)) eff = eff.mul(layers.t.enlightedEffect())
 					  if(inChallenge("s", 12) || inChallenge("s", 22)) eff = new Decimal(1)
 					  return eff},
