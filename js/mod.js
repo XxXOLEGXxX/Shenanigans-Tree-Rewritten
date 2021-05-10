@@ -12,15 +12,24 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2.1",
-	name: "haha shitpost go brrrrrrrrrrrrrrrr",
+	num: "0.3 [1/2]",
+	name: "The moment you all have been waiting for",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h4>v0.2.1</h4><br>
+	<h3>v0.3: The moment you all have been waiting for</h3><br>
+		- NerfBusters is now only purchasable with at least one Impatience-inator<br>
+		- Chaos and Transcendence layers are now unlockable<br>
+		- Gave the name of each version and fixed the spacing in changelog<br><br>
+		What comes with those new layers:<br>
+		- A total of 12 upgrades (18 more upgrades will be added later)<br>
+		- Five more achievements (6 more achievements will be added layer)<br>
+		- Even more shitposts, memes and (JOJO) references<br>
+		- Still no 5th Square Expansion<br><br>
+		v0.2.1: haha shitpost go brrrrrrrrrrrrrrrr<br>
 		- Rebalanced early-late game (Reworked 2nd Impatience buyable)<br>
-		- ???<br>
-	<h3>v0.2</h3><br>
+		- ???<br><br>
+	<h3>v0.2: Rebalance Update</h3><br>
 		- Reworked/Added Impatience Layer (2 buyables, 5 upgrades)<br>
 		- Changed "Ah yes, the Nothinginator"'s formula<br>
 		- Due the previous change in this changelog, some of upgrades's cost were balanced<br>
@@ -30,16 +39,16 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Shitton of references were poured in<br>
 		- Unnecessary amount of texts were added in<br>
 		- Fixed the bug, where challenge's effect still persist after Square Expansion reset<br>
-		- just play this mod already already omg.
-	<h4>v0.1.1</h4><br>
+		- just play this mod already already omg.<br><br>
+		v0.1.1: Balance Update<br>
 		- Changed 14th upgrade's effects to make it feel like it actually does something<br>
-		- Due it working more effecient, the costs of later upgrades were raised to match the changes <br>
-	<h3>v0.1</h3><br>
+		- Due it working more effecient, the costs of later upgrades were raised to match the changes <br><br>
+	<h3>v0.1: Grand opening... Or is it grand publishing?</h3><br>
 		- Added this, that, did some stuff there- you get the point.<br>
 		- But seriously, there's 3 "layers" in total, craptons of upgrades and challenges for v0.1.<br>
 		- idk what else to say about the mod, that was just released.`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
+let winText = `Congratulations! You have reached the end and beaten this game. However, you've only reached the halfway...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -64,7 +73,7 @@ function getPointGen() {
 	if(hasChallenge("s", 12)) gain = gain.mul(60)
 	if(hasChallenge("s", 21)) gain = gain.mul(60)
 	if(hasChallenge("s", 22)) gain = gain.mul(60)
-	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(player.i.points.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
+	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(player.i.points.add(10).log(10)).mul(player.t.points.add(3).log(3)).mul(player.t.realPoints.add(10).log(10)).mul(player.c.points.add(3).log(3)).mul(player.c.chaoticPoints.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
 	if(hasAchievement("a", 11)) gain = gain.mul(6)
 	if(hasAchievement("a", 13)) gain = gain.mul(funnyAchievementMultiplier)
 	if(hasUpgrade("s", 11)) gain = gain.mul(layers.s.upgrades[11].effect2()).mul(layers.s.upgrades[11].effect())
@@ -76,6 +85,8 @@ function getPointGen() {
 	if(hasUpgrade("s", 55) && !inChallenge("s", 12) && !inChallenge("s", 22)) gain = gain.mul(62)
 	if(layers.i.layerShown() == true) gain = gain.mul(layers.i.effect())
 	if(gain.gte(1)) gain = gain.pow(player.se.points.add(1))
+	if(hasUpgrade("c", 11)) gain = gain.mul(new Decimal(100).add(layers.c.upgrades[11].effect()).div(100))
+	if(hasUpgrade("c", 13)) gain = gain.pow(layers.c.chaoticEffect2())
 	if(inChallenge("s", 11)) gain = gain.div(7560)
 	let shitpostPower = new Decimal(69420).pow(player.s3.secretPoints.add(1).pow(player.s3.secretPoints.add(1)))
 	if(hasUpgrade("s3", 61)) shitpostPower = shitpostPower.pow(69420).pow(player.s3.topSecretPoints)
@@ -91,11 +102,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+	function() {return player.points.gte(new Decimal(308).pentate(2)) ? "(Oh shit/sec)" : ""}
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal(2).pow(1024)) && player["tree-tab"].points.gte(12)
+	return (hasMilestone("c", 2) && player.c.upgrades.length >= 9) || (player.t.points.gte(2) && player.t.upgrades.length >= 3) && player.a.achievements.length >= 22
 }
 
 
