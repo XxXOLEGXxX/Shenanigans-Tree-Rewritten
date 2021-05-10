@@ -48,7 +48,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- But seriously, there's 3 "layers" in total, craptons of upgrades and challenges for v0.1.<br>
 		- idk what else to say about the mod, that was just released.`
 
-let winText = `Congratulations! You have reached the end and beaten this game. However, you've only reached the halfway...`
+let winText = `Congratulations! You have reached the end and beaten this game. However, you've only reached the halfway point...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
