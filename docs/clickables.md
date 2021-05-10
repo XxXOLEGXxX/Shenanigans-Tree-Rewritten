@@ -16,8 +16,6 @@ Clickables should be formatted like this:
 
 ```js
 clickables: {
-    rows: # of rows,
-    cols: # of columns,
     11: {
         display() {return "Blah"},
         etc
@@ -40,6 +38,8 @@ Features:
 
 - onClick(): A function that implements clicking one of the clickable. 
 
+- onHold(): **optional** A function that is called 20x/sec when the button is held for at least 0.25 seconds.
+
 - style: **optional**. Applies CSS to this clickable, in the form of an object where the keys are CSS attributes, and the values are the values for those attributes (both as strings).
 
 - layer: **assigned automagically**. It's the same value as the name of this layer, so you can do `player[this.layer].points` or similar.
@@ -52,4 +52,4 @@ You can also use these features on the clickables object to add a button above a
 
 - masterButtonText: **optional**. Text to display on the Master Button.
 
-- showMasterButton(): **optional**. A function determining whether or not to show the button. Defaults to true if absent.
+- showMasterButton(): **optional**. A function determining whether or not to show the button, if masterButtonPress is defined. Defaults to true if absent.

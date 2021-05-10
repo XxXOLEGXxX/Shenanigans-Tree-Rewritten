@@ -18,9 +18,11 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.3: The moment you all have been waiting for</h3><br>
+		- Updated TMT from 2.π to 2.5.2.1
 		- NerfBusters is now only purchasable with at least one Impatience-inator<br>
-		- Chaos and Transcendence layers are now unlockable<br>
-		- Gave the name of each version and fixed the spacing in changelog<br><br>
+		- Chaos and Transcendence layers are now functionable<br>
+		- Gave the name of each version and fixed the spacing in changelog<br>
+		- Achievements now has images (Wow. Much quality. Such fun.)<br><br>
 		What comes with those new layers:<br>
 		- A total of 12 upgrades (18 more upgrades will be added later)<br>
 		- Five more achievements (6 more achievements will be added layer)<br>

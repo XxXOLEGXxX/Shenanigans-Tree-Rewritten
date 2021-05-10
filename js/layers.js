@@ -352,7 +352,7 @@ addLayer("a", {
 			points: new Decimal(0),
         }},
 		tabFormat: ["main-display", "blank", "blank", "achievements"],
-        color() {return player.a.achievements.length >= 18 && player["tree-tab"].points.lt(12) ? "#77BF5F" : "#E0E0E0"},
+        color() {return (player.a.achievements.length >= 18 && player["tree-tab"].points.lt(12)) || player.a.achievements.length >= 22 ? "#77BF5F" : "#E0E0E0"},
         resource: "achievements", 
         row: "side",
         layerShown() {return player.points.lt(new Decimal(308).pentate(2)) || player["tree-tab"].points.gte(12)}, 
