@@ -1227,12 +1227,12 @@ addLayer("c", {
 			done() { return player.c.points.gte(1) }
 		},
 		1: {
-			requirementDescription: "2 Chaos of Condensed Kong",
+			requirementDescription: "2 Chaoses of Condensed Kong",
 			effectDescription() {return "Chaos reset no longer resets first four Shenanigans upgrades."},
 			done() { return player.c.points.gte(2) }
 		},
 		2: {
-			requirementDescription: "3 Chaos of Condensed Kong",
+			requirementDescription: "3 Chaoses of Condensed Kong",
 			effectDescription() {return "You automatically gain more Shenanigans."},
 			done() { return player.c.points.gte(3) }
 		},
