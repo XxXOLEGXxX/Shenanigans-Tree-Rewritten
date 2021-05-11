@@ -1256,6 +1256,7 @@ addLayer("c", {
 					   if(hasUpgrade("c", 21)) eff = eff.mul(new Decimal(0.9).pow(player.s.upgrades.length))
 					   return eff},
 			effectDisplay() {return "+"+format(this.effect())+"% "+format(this.effect2())+"%"},
+			currencyDisplayName: "Chaos of Condensed Kong",
 			cost: new Decimal(1)
 		},
 		12: {
@@ -1265,26 +1266,31 @@ addLayer("c", {
 					  if(hasUpgrade("c", 22)) eff = eff.mul(upgradeEffect("c", 22))
 					  return eff},
 			effectDisplay() {return "x"+format(this.effect())},
+			currencyDisplayName: "Chaoses of Condensed Kong",
 			cost: new Decimal(2)
 		},
 		13: {
 			title: "Chaos Energy",
 			description: "Unlocks a new type of chaotic source",
+			currencyDisplayName: "Chaos of Condensed Kong",
 			cost: new Decimal(1)
 		},
 		14: {
 			title: "Chaotic Enchantment",
 			description: "Adds another effect to C.o.C.K.",
+			currencyDisplayName: "Chaoses of Condensed Kong",
 			cost: new Decimal(2)
 		},
 		15: {
 			title: "Two Pair",
 			description: "You start off with two of Impatience buyables each on Chaos reset",
+			currencyDisplayName: "Chaos of Condensed Kong",
 			cost: new Decimal(1)
 		},
 		21: {
 			title: "Box Of \"Box Of Biscuits\" Biscuits",
 			description: "\"Box Of \"What the hell is this?\" Biscuits\" includes Shenanigans upgrades as well",
+			currencyDisplayName: "Chaoses of Condensed Kong",
 			cost: new Decimal(2),
 			unlocked() {return player.c.upgrades.length >= 5}
 		},
@@ -1293,18 +1299,21 @@ addLayer("c", {
 			description: "Boosts chaotic energy's gain and \"Chaotic Recursion\" by chaotic energy at more reduced rate",
 			effect() {return player.c.chaoticPoints.add(10).log(10)},
 			effectDisplay() {return "x"+format(this.effect())},
+			currencyDisplayName: "Chaoses of Condensed Kong",
 			cost: new Decimal(3),
 			unlocked() {return player.c.upgrades.length >= 5}
 		},
 		23: {
 			title: "Enchanted Chaos",
 			description: "Adds another effect to chaotic energies",
+			currencyDisplayName: "Chaos of Condensed Kong",
 			cost: new Decimal(1),
 			unlocked() {return player.c.upgrades.length >= 5}
 		},
 		24: {
 			title: "One Pair",
 			description: "You start off with one more of Impatience buyables each on Chaos reset",
+			currencyDisplayName: "Chaos of Condensed Kong",
 			cost: new Decimal(1),
 			unlocked() {return player.c.upgrades.length >= 5}
 		},
