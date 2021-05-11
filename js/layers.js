@@ -117,7 +117,7 @@ addLayer("s", {
 			},
 		31: {
 			title: "Infinitish Boost",
-			description: "Boosts nothing's gain and shenanigans's requirement, but it gets weaker the closer you are to the Infniity.",
+			description: "Boosts nothing's gain and shenanigans's requirement, but it gets weaker the closer you are to the Infinity.",
 			effect() {let eff = new Decimal(2).pow(10240).div(player.points.add(0.001).pow(9)).log(new Decimal(2).pow(1024))
 					  if(eff.lte(0.006835937500006363)) eff = new Decimal(0.006835937500006363)
 					  if(hasMilestone("t", 0)) eff = eff.mul(layers.t.enlightedEffect())
@@ -562,7 +562,7 @@ addLayer("se", {
     row: "side", // Row the layer is in on the tree (0 is the first row)
 	milestones: {
 		0: {
-			requirementDescription: "4 sqaure expansions",
+			requirementDescription: "4 square expansions",
 			effectDescription: "Keeps first 4 Shenanigans upgrades on Square Expansion reset",
 			done() { return player.se.points.gte(4) }
 		}
@@ -643,7 +643,7 @@ addLayer("i", {
 		},
 		14: {
 			title: "CONDENSE.",
-			description: "1 Impatience-inator generates impatiences as much as as 19 Impatience-inators",
+			description: "1 Impatience-inator generates impatiences as much as 19 Impatience-inators",
 			currencyLocation() {return player.i.buyables},
 			currencyDisplayName: "Impatience-inators",
 			currencyInternalName: 11,
@@ -652,7 +652,7 @@ addLayer("i", {
 		},
 		15: {
 			title: "Shenanigans Power",
-			description: "Shenanigans boosts Impaitence's effect after log(64)",
+			description: "Shenanigans boosts Impatience's effect after log(64)",
 			effect() { let eff = player.s.points.add(1)
 					   if(hasUpgrade("t", 21)) eff = eff.mul(layers.t.enlightedEffect())
 					   return eff},
@@ -1260,7 +1260,7 @@ addLayer("c", {
 		},
 		12: {
 			title: "Chaotic Recursion",
-			description: "Boosts chaotic energy's gain by chatic energy at reduced rate",
+			description: "Boosts chaotic energy's gain by chaotic energy at reduced rate",
 			effect() {let eff = player.c.chaoticPoints.add(2).log(2)
 					  if(hasUpgrade("c", 22)) eff = eff.mul(upgradeEffect("c", 22))
 					  return eff},
@@ -1290,7 +1290,7 @@ addLayer("c", {
 		},
 		22: {
 			title: "Shit Gets Wackier",
-			description: "Boosts chatic energy's gain and \"Chaotic Recursion\" by chaotic energy at more reduced rate",
+			description: "Boosts chaotic energy's gain and \"Chaotic Recursion\" by chaotic energy at more reduced rate",
 			effect() {return player.c.chaoticPoints.add(10).log(10)},
 			effectDisplay() {return "x"+format(this.effect())},
 			cost: new Decimal(3),
