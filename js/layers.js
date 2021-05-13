@@ -274,34 +274,34 @@ addLayer("s", {
 		11: {
 			name: "\"Ouch\"",
 			challengeDescription: "Nothing's gain is divided by 7,560 times",
-			rewardDescription: "Nothing's gain's base is increased by 60x",
+			rewardDescription() {return hasUpgrade("c", 31) ? "Nothing's gain's base is increased by 3,600x" : "Nothing's gain's base is increased by 60x"},
 			currencyDisplayName: "nothings",
 			goal: new Decimal(8589934592),
-			unlocked() {return hasUpgrade("s", 22)}
+			unlocked() {return hasUpgrade("s", 22) || hasMilestone("c", 3)}
 		},
 		12: {
 			name: "Tic",
 			challengeDescription: "All odd columm numbered Shenanigans upgrades has no effect",
-			rewardDescription: "Unlocks another challenge and nothing's gain's base is increased by 60x, again",
+			rewardDescription() {return hasUpgrade("c", 31) ? "Unlocks another challenge and nothing's gain's base is increased by 3,600x, again" : "Unlocks another challenge and nothing's gain's base is increased by 60x, again"},
 			currencyDisplayName: "nothings",
 			goal: new Decimal(12800000000000000000000),
-			unlocked() {return hasUpgrade("s", 33)}
+			unlocked() {return hasUpgrade("s", 33) || hasMilestone("c", 3)}
 		},
 		21: {
 			name: "Tac",
 			challengeDescription: "All even columm numbered Shenanigans upgrades has no effect",
-			rewardDescription: "Nothing's gain's base is increased by 60x yet again",
+			rewardDescription() {return hasUpgrade("c", 31) ? "Nothing's gain's base is increased by 3,600x yet again" : "Nothing's gain's base is increased by 60x yet again"},
 			currencyDisplayName: "nothings",
 			goal: new Decimal(25600000000000000000000000),
-			unlocked() {return hasChallenge("s", 12)}
+			unlocked() {return hasChallenge("s", 12) || hasMilestone("c", 3)}
 		},
 		22: {
 			name: "Toe",
 			challengeDescription: "Only first 3 Shenanigans upgrades have effects",
-			rewardDescription: "Reveals 16th Shenanigans upgrade and nothing's gain's base is increased by 60x yet again",
+			rewardDescription() {return hasUpgrade("c", 31) ? "Reveals 16th Shenanigans upgrade and nothing's gain's base is increased by 3,600x yet again" : "Reveals 16th Shenanigans upgrade and nothing's gain's base is increased by 60x yet again"},
 			currencyDisplayName: "nothings",
 			goal: new Decimal(7.77e83),
-			unlocked() {return hasUpgrade("s", 43)}
+			unlocked() {return hasUpgrade("s", 43) || hasMilestone("c", 3)}
 		},
 	},
 	buyables: {
@@ -329,20 +329,20 @@ addLayer("s", {
     ],
     layerShown(){return player.points.lt(new Decimal(308).pentate(2)) || player["tree-tab"].points.gte(12)},
 	doReset(resettingLayer){
-		if(layers[resettingLayer].symbol == "C" && hasMilestone("c", 0)) { player.s.points = new Decimal(player.se.points.add(1).pow(2))
+		if(layers[resettingLayer].symbol == "C" && hasMilestone("c", 0) && !hasMilestone("c", 6)) { player.s.points = new Decimal(player.se.points.add(1).pow(2))
 																		   if(hasMilestone("c", 1) || player.c.points.gte(2)) player.s.upgrades = [11, 12, 21, 22]
 																		   else player.s.upgrades = []
-																		   player.s.challenges[11] = 0
-																		   player.s.challenges[12] = 0
-																		   player.s.challenges[21] = 0
-																		   player.s.challenges[22] = 0
+																		   if(!hasMilestone("c", 3)){player.s.challenges[11] = 0
+																								 	 player.s.challenges[12] = 0
+																								 	 player.s.challenges[21] = 0
+																									 player.s.challenges[22] = 0}
 																		 }
-		else if(layers[resettingLayer].symbol == "T" && hasMilestone("t", 0)) { player.s.points = new Decimal(0)
+		else if(layers[resettingLayer].symbol == "T" && hasMilestone("t", 0) && !hasMilestone("t", 3)) { player.s.points = new Decimal(0)
 																				player.s.upgrades = []
-																				player.s.challenges[11] = 0
-																				player.s.challenges[12] = 0
-																				player.s.challenges[21] = 0
-																				player.s.challenges[22] = 0
+																				if(!hasMilestone("t", 2)){player.s.challenges[11] = 0
+																										  player.s.challenges[12] = 0
+																										  player.s.challenges[21] = 0
+																										  player.s.challenges[22] = 0}
 																		      }
 	},
 })
@@ -353,7 +353,7 @@ addLayer("a", {
 			points: new Decimal(0),
         }},
 		tabFormat: ["main-display", "blank", "blank", "achievements"],
-        color() {return (player.a.achievements.length >= 18 && player["tree-tab"].points.lt(12)) || player.a.achievements.length >= 22 ? "#77BF5F" : "#E0E0E0"},
+        color() {return (player.a.achievements.length >= 18 && player["tree-tab"].points.lt(12)) || player.a.achievements.length >= 30 ? "#77BF5F" : "#E0E0E0"},
         resource: "achievements", 
         row: "side",
         layerShown() {return player.points.lt(new Decimal(308).pentate(2)) || player["tree-tab"].points.gte(12)}, 
@@ -515,7 +515,35 @@ addLayer("a", {
                 done() {return player.c.chaoticPoints.gte(28800)}, // This one is a freebie
 				onComplete() {player.a.points = player.a.points.add(1)},
 				unlocked() {return player["tree-tab"].points.gte(12) && player.c.unlocked},
-                tooltip() {return "Get 28800 chaotic energies"}, // Shows when achievement is not completed
+                tooltip() {return "Get 28,800 chaotic energies"}, // Shows when achievement is not completed
+            },
+            45: {
+                name: "What am I supposed to do to stop you?",
+                done() {return player.c.score.gte(19)}, // This one is a freebie
+				onComplete() {player.a.points = player.a.points.add(1)},
+				unlocked() {return hasUpgrade("c", 42)},
+                tooltip() {return "Upgrade the bar up to \"Ugh\" level"}, // Shows when achievement is not completed
+            },
+            46: {
+                name: "Adventure Jevilist",
+                done() {return player.c.chaoticPoints.gte(1000000)}, // This one is a freebie
+				onComplete() {player.a.points = player.a.points.add(1)},
+				unlocked() {return player["tree-tab"].points.gte(12) && player.c.unlocked},
+                tooltip() {return "Get 1,000,000 chaotic energies"}, // Shows when achievement is not completed
+            },
+            51: {
+                name: "The Original Trio-angle",
+                done() {return player.t.unlocked == true && player.c.unlocked == true}, // This one is a freebie
+				onComplete() {player.a.points = player.a.points.add(1)},
+				unlocked() {return player.t.unlocked == true || player.c.unlocked == true},
+                tooltip() {return "Unlock both layers"}, // Shows when achievement is not completed
+            },
+            52: {
+                name: "The Endgamer... Or is it?",
+                done() {return player.t.upgrades.length >= 15 && player.c.upgrades.length >= 15}, // This one is a freebie
+				onComplete() {player.a.points = player.a.points.add(1)},
+				unlocked() {return player.t.unlocked == true || player.c.unlocked == true},
+                tooltip() {return "Buy 15 Chaos upgrades and 15 Transcended upgrades<br>Reward: Unlocks one more Transcended upgrade"}, // Shows when achievement is not completed
             },
             53: {
                 name: "But wait, there's more!",
@@ -531,6 +559,20 @@ addLayer("a", {
 				unlocked() {return player["tree-tab"].points.gte(12) && player.t.unlocked},
                 tooltip() {return "Reach x666 effect on \"Shenanigans Power\""}, // Shows when achievement is not completed
             },
+            55: {
+                name: "420 blaze it",
+                done() {return upgradeEffect("i", 13).gte(420)}, // This one is a freebie
+				onComplete() {player.a.points = player.a.points.add(1)},
+				unlocked() {return player["tree-tab"].points.gte(12) && player.t.unlocked},
+                tooltip() {return "Reach x420 effect on \"Impatience-inator-inator\""}, // Shows when achievement is not completed
+            },
+            56: {
+                name: "\"OH YOU FUCKING WON'T, BITCH!\"",
+                done() {return player.t.buyables[11].gte(32)}, // This one is a freebie
+				onComplete() {player.a.points = player.a.points.add(1)},
+				unlocked() {return hasAchievement("a", 56)},
+                tooltip() {return "Get 32 Transcended Exponent<br>Anti-Reward: Transcended Exponent's cost is increased to the power of 2"}, // Shows when achievement is not completed
+            },
         },
     }, 
 )
@@ -545,7 +587,7 @@ addLayer("se", {
     }},
 	resetDescription: "Abandon your progress for ",
     color: "#94d0d8",
-    requires() {return player.se.points.gte(4) ? new Decimal(9999999) : player.se.points.gte(3) ? new Decimal(9.25) : player.se.points.gte(2) ? new Decimal(8) : new Decimal(3)}, // Can be a function that takes requirement increases into account
+    requires() {return player.se.points.gte(4) && hasUpgrade("t", 61) ? new Decimal(54.875) : player.se.points.gte(4) ? new Decimal(9999999) : player.se.points.gte(3) ? new Decimal(9.25) : player.se.points.gte(2) ? new Decimal(8) : new Decimal(3)}, // Can be a function that takes requirement increases into account
     resource: "square expansions", // Name of prestige currency
     baseResource: "shenanigans", // Name of resource prestige is based on
     baseAmount() {return player.s.points}, // Get the current amount of baseResource
@@ -764,18 +806,23 @@ addLayer("i", {
 	branches: ["s"],
     layerShown(){return (hasAchievement("a", 32) && player.points.lt(new Decimal(308).pentate(2))) || player["tree-tab"].points.gte(12)},
 	doReset(resettingLayer){
-		if(layers[resettingLayer].symbol == "C" && hasUpgrade("c", 15)) { player.i.buyables[11] = new Decimal(2)
+		if(layers[resettingLayer].symbol == "C" && hasMilestone("c", 4)) { if(player.i.buyables[11].lt(3)) player.i.buyables[11] = new Decimal(3)
+																		   if(player.i.buyables[12].lt(3)) player.i.buyables[12] = new Decimal(3)}
+		else if(layers[resettingLayer].symbol == "C" && hasUpgrade("c", 15)) { player.i.buyables[11] = new Decimal(2)
 																		  player.i.buyables[12] = new Decimal(2)
 																		  if(hasUpgrade("c", 24)) {player.i.buyables[11] = new Decimal(3)
 																								   player.i.buyables[12] = new Decimal(3)}
 																		  player.i.upgrades = []
+																		  player.i.points = new Decimal(1)
 																		 }
+		else if(layers[resettingLayer].symbol == "T" && hasMilestone("t", 1)) player.i.points = player.i.points
 		else if(layers[resettingLayer].symbol == "T" && hasMilestone("t", 0)) {player.i.buyables[11] = new Decimal(0)
 																		       player.i.buyables[12] = new Decimal(0)
+																			   player.i.points = new Decimal(1)
 																		 }
 		else if(layers[resettingLayer].symbol == "S") player.i.points = player.i.points
-		else layerDataReset("i")
-		player.i.points = new Decimal(1)
+		else {layerDataReset("i")
+		player.i.points = new Decimal(1)}
 	},
 })
 
@@ -1190,17 +1237,25 @@ addLayer("c", {
         unlocked: false,
 		points: new Decimal(0),
 		chaoticPoints: new Decimal(0),
+		score: new Decimal(1),
+		scoreEffect: new Decimal(0),
+		requirement: new Decimal(10),
+		stupidProgress: new Decimal(0)
     }},
+	canBuyMax() {return hasMilestone("c", 5)},
 	update(diff) {
 		let funny = new Decimal(diff)
+		let funny2 = new Decimal(diff).mul(player.c.score.pow(1.5))
 		if(hasUpgrade("c", 12)) funny = funny.mul(upgradeEffect("c", 12))
 		if(hasUpgrade("c", 22)) funny = funny.mul(upgradeEffect("c", 22))
 		if(hasUpgrade("c", 13)) player.c.chaoticPoints = player.c.chaoticPoints.add(funny)
+		if(hasUpgrade("c", 42) && player.c.score.lt(19)) player.c.stupidProgress = player.c.stupidProgress.add(funny2)
+		if(player.c.stupidProgress.gte(100) && player.c.score.lt(19)) player.c.stupidProgress = new Decimal(0)
 	},
-	tabFormat: ["main-display", "prestige-button", "resource-display", ["display-text", function() {return player.c.chaoticPoints.gt(0) ? "You have "+format(player.c.chaoticPoints)+" chaotic energies, nerfing NerfBusters's nerfs by root("+format(layers.c.chaoticEffect())+"), boosting your nothing's gain by ^"+format(layers.c.chaoticEffect2())+" and boosts \"Shenanigans Upgrade\" by x"+format(layers.c.chaoticEffect3()) : player.c.chaoticPoints.gt(0) ? "You have "+format(player.c.chaoticPoints)+" chaotic energies, nerfing NerfBusters's nerfs by root("+format(layers.c.chaoticEffect())+") and boosting your nothing's gain by ^"+format(layers.c.chaoticEffect2()) : ""}], "blank", "milestones", "upgrades"],
-	prestigeButtonText() {return "Explore the secret of nothing and obtain one of the Chaoses of Condensed Kong<br/><br/>Requirement: "+format(tmp.c.nextAt)+" nothings"},
+	tabFormat: ["main-display", "prestige-button", "resource-display", ["display-text", function() {return player.c.chaoticPoints.gt(0) && hasUpgrade("t", 54) ? "You have "+format(player.c.chaoticPoints)+" chaotic energies, nerfing NerfBusters's nerfs by root("+format(layers.c.chaoticEffect())+"), boosting your nothing's gain by ^"+format(layers.c.chaoticEffect2())+" and \"Shenanigans Upgrade\"'s effect by x"+format(layers.c.chaoticEffect3())+"<br>By the way, they also boost enlightment points's gain by ^"+format(layers.c.chaoticEffect()) : player.c.chaoticPoints.gt(0) && hasUpgrade("c", 23) ? "You have "+format(player.c.chaoticPoints)+" chaotic energies, nerfing NerfBusters's nerfs by root("+format(layers.c.chaoticEffect())+"), boosting your nothing's gain by ^"+format(layers.c.chaoticEffect2())+" and \"Shenanigans Upgrade\"'s effect by x"+format(layers.c.chaoticEffect3()) : player.c.chaoticPoints.gt(0) ? "You have "+format(player.c.chaoticPoints)+" chaotic energies, nerfing NerfBusters's nerfs by root("+format(layers.c.chaoticEffect())+") and boosting your nothing's gain by ^"+format(layers.c.chaoticEffect2()) : ""}], "blank", "milestones", "upgrades", "blank",  ["buyable", 11], "blank", "blank", "blank", "blank", ["bar", "ass"], "blank", ["buyable", 12]],
+	prestigeButtonText() {return hasMilestone("c", 5) && player.points.lt(tmp.c.nextAt) ? "Explore the secret of nothing and obtain C.o.C.K.<br/>You'll receive +0 C.o.C.K. after Chaos reset<br>Next cost: "+format(getNextAt("c", canMax=true, useType="static"))+" nothings" : hasMilestone("c", 5) ? "Explore the secret of nothing and obtain C.o.C.K.<br/>You'll receive +"+ getResetGain("c", "static")+" C.o.C.K. after Chaos reset<br>Next cost: "+format(getNextAt("c", canMax=true, useType="static"))+" nothings" : "Explore the secret of nothing and obtain one of the Chaoses of Condensed Kong<br/><br/>Requirement: "+format(tmp.c.nextAt)+" nothings"},
     color: "#6d6dc0",
-    requires() {return player.t.unlocked ? new Decimal(308).pentate(2) : new Decimal(2).pow(1024)}, // Can be a function that takes requirement increases into account
+    requires() {return player.t.unlocked && !hasUpgrade("c", 32) && !hasUpgrade("t", 32) ? new Decimal(308).pentate(2) : new Decimal(2).pow(1024)}, // Can be a function that takes requirement increases into account
     resource() {return player.c.points.gt(2) ? "Chaoses of Condensed Kong" : "Chaos of Condensed Kong"}, // Name of prestige currency
 	effect() {return player.c.points.mul(7)},
 	effect2() {return new Decimal(1).add(player.c.points.mul(0.7))},
@@ -1211,7 +1266,7 @@ addLayer("c", {
     baseResource: "nothings", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-	base: 5000000000000000,
+	base: 53400000000000,
     exponent: 2, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
@@ -1236,6 +1291,26 @@ addLayer("c", {
 			effectDescription() {return "You automatically gain more Shenanigans."},
 			done() { return player.c.points.gte(3) }
 		},
+		3: {
+			requirementDescription: "4 Chaoses of Condensed Kong",
+			effectDescription() {return "Chaos reset no longer resets Shenanigans challenges completion."},
+			done() { return player.c.points.gte(4) }
+		},
+		4: {
+			requirementDescription: "5 Chaoses of Condensed Kong",
+			effectDescription() {return "Chaos reset no longer resets Impatience layer."},
+			done() { return player.c.points.gte(5) }
+		},
+		5: {
+			requirementDescription: "6 Chaoses of Condensed Kong",
+			effectDescription() {return "You can buy max C.o.C.K."},
+			done() { return player.c.points.gte(6) }
+		},
+		6: {
+			requirementDescription: "7 Chaoses of Condensed Kong",
+			effectDescription() {return "Chaos reset resets nothing."},
+			done() { return player.c.points.gte(7) }
+		},
 	},
 	upgrades: {
 		rows: 5,
@@ -1251,9 +1326,15 @@ addLayer("c", {
 					  if(hasUpgrade("c", 21)) {for (var i = 0; i < player.s.upgrades.length; i++){
 					  eff = eff.add(base) 
 					  base = base.mul(1.1)}}
+					  if(hasUpgrade("t", 43)) {for (var i = 0; i < player.t.upgrades.length; i++){
+					  eff = eff.add(base) 
+					  base = base.mul(1.1)}}
+					  if(hasUpgrade("t", 31)) eff = eff.mul(layers.t.enlightedEffect())
 					  return eff},
 			effect2() {let eff = new Decimal(100).mul(new Decimal(0.9).pow(player.c.upgrades.length))
 					   if(hasUpgrade("c", 21)) eff = eff.mul(new Decimal(0.9).pow(player.s.upgrades.length))
+					   if(hasUpgrade("t", 43)) eff = eff.mul(new Decimal(0.9).pow(player.t.upgrades.length))
+					   if(hasUpgrade("t", 31)) eff = eff.div(layers.t.enlightedEffect())
 					   return eff},
 			effectDisplay() {return "+"+format(this.effect())+"% "+format(this.effect2())+"%"},
 			currencyDisplayName: "Chaos of Condensed Kong",
@@ -1306,8 +1387,8 @@ addLayer("c", {
 		23: {
 			title: "Enchanted Chaos",
 			description: "Adds another effect to chaotic energies",
-			currencyDisplayName: "Chaos of Condensed Kong",
-			cost: new Decimal(1),
+			currencyDisplayName: "Chaoses of Condensed Kong",
+			cost: new Decimal(2),
 			unlocked() {return player.c.upgrades.length >= 5}
 		},
 		24: {
@@ -1316,6 +1397,104 @@ addLayer("c", {
 			currencyDisplayName: "Chaos of Condensed Kong",
 			cost: new Decimal(1),
 			unlocked() {return player.c.upgrades.length >= 5}
+		},
+		31: {
+			title: "BOOSTER BOOSTER BOOSTER BOOSTER BOOSTER BOOSTER BOOSTER",
+			description: "Shenanigans challenges's reward are squared",
+			currencyDisplayName: "Chaoses of Condensed Kong",
+			cost: new Decimal(4),
+			unlocked() {return player.c.upgrades.length >= 9}
+		},
+		32: {
+			title: "\"I CAN DO ANYTHING\"",
+			description: "Boosts chaotic energies's gain by the amount of enlightment points and Transcendence layer acts as if you never unlocked Chaos layer in the first place",
+			effect() {return player.t.realPoints.add(10).log(10)},
+			effectDisplay() {return "x"+format(this.effect())},
+			currencyDisplayName: "Chaoses of Condensed Kong",
+			cost: new Decimal(5),
+			unlocked() {return player.c.upgrades.length >= 9}
+		},
+		33: {
+			title: "A Little Exponent Won't Hurt... I swear to the Jevil himself, it won't inflate like \"NerfBusters\" before the rework!",
+			description: "Exponents nothing's gain by ^1.102",
+			currencyDisplayName: "Chaoses of Condensed Kong",
+			cost: new Decimal(4),
+			unlocked() {return player.c.upgrades.length >= 9}
+		},
+		41: {
+			title: "\"Prepare For Trouble!\"",
+			description: "Unlocks Chaos buyable",
+			currencyDisplayName: "Chaoses of Condensed Kong",
+			cost: new Decimal(6),
+			unlocked() {return player.c.upgrades.length >= 12}
+		},
+		42: {
+			title: "\"And Make It Double!\"",
+			description: "Unlocks \"rhythm\" minigame",
+			currencyDisplayName: "Chaoses of Condensed Kong",
+			cost: new Decimal(6),
+			unlocked() {return player.c.upgrades.length >= 12}
+		},
+		51: {
+			title: "Boring Upgrade",
+			description: "It boosts nothing's gain by 1.79e308x or something...",
+			currencyDisplayName: "Chaoses of Condensed Kong",
+			cost: new Decimal(7),
+			unlocked() {return player.c.upgrades.length >= 14}
+		},
+	},
+	buyables: {
+		rows: 1,
+		cols: 2,
+		11: {
+			cost() { return new Decimal(1).add(player.c.buyables[11]) },
+			effect() { return new Decimal(10).pow(player.c.buyables[11]).pow(new Decimal(1).add(player.c.scoreEffect))},
+			title: "Chaotic Dumpster",
+			display() { return "Multiplies nothing's gain.<br>Amount: "+formatWhole(player.c.buyables[11])+"<br/>Cost: "+format(this.cost())+" C.o.C.K.<br/>Currently: x"+format(this.effect()) },
+			canAfford() { return player.c.points.gte(this.cost()) },
+			buy() {
+				player.c.points = player.c.points.sub(this.cost())
+				player.c.buyables[11] = player.c.buyables[11].add(1)
+			},
+			unlocked() {return hasUpgrade("c", 41)}
+			},
+		12: {
+			title() {return player.c.score.gte(19) ? "I dare you, you funkin' smartass wannabe": "Press the button to upgrade"},
+			canAfford() { return true },
+			buy() {
+				if(player.c.stupidProgress.gte(player.c.requirement) && player.c.score.lt(19)) {player.c.stupidProgress = new Decimal(0)
+																	   if(player.c.score.gte(18)) player.c.stupidProgress = new Decimal(100)
+																	   player.c.score = player.c.score.add(1)
+																	   player.c.scoreEffect = player.c.scoreEffect.add(0.05)
+																	   player.c.requirement = player.c.requirement.add(5)}
+				else if(player.c.stupidProgress.lt(player.c.requirement)) {player.c.stupidProgress = new Decimal(0)
+																	       if(player.c.score.gt(1) && player.c.score.lt(19)) {player.c.score = player.c.score.sub(1)
+																									 player.c.scoreEffect = player.c.scoreEffect.sub(0.05)
+																			       					 player.c.requirement = player.c.requirement.sub(5)}
+																		   if(player.c.score.gte(19)){player.c.score = new Decimal(1)
+																									  player.c.scoreEffect = new Decimal(0)
+																									  player.c.requirement = new Decimal(10)}
+				}
+			},
+			unlocked() {return hasUpgrade("c", 42)},
+			style() { return {
+				"height": "100px",
+				"width": "200px"
+				}
+			}
+			},
+	},
+	bars: {
+		ass: {
+			direction: RIGHT,
+			width: 600,
+			height: 70,
+			display() {return player.c.score.gte(19) ? "God effing dammit! Well played, you little shit!... Just don't click on buyable again at any cost. Or else.<br>Current level of difficulty: \"Ugh\"<br>Current effect: ^"+format(new Decimal(1).add(player.c.scoreEffect)) : format(player.c.stupidProgress)+"%<br>You need "+formatWhole(player.c.requirement)+"% to boost \"Chaotic Dumpster\"'s effect successfully<br>Current level of difficulty: "+formatWhole(player.c.score)+"<br>Current effect: ^"+format(new Decimal(1).add(player.c.scoreEffect))},
+            fillStyle: {'background-color' : "#734f92"},
+            baseStyle: {'background-color' : "black"},
+            textStyle: {'color': '#white', 'font-size': '14px'},
+			progress() { return player.c.stupidProgress.div(100).toNumber() },
+			unlocked() { return hasUpgrade("c", 42) }
 		},
 	},
     row: 1, // Row the layer is in on the tree (0 is the first row)
@@ -1338,15 +1517,22 @@ addLayer("t", {
 	update(diff){
 		let funny = new Decimal(diff).mul(layers.t.effect())
 		if(hasUpgrade("t", 11)) funny = funny.mul(upgradeEffect("t", 11))
+		if(hasUpgrade("t", 33)) funny = funny.mul(upgradeEffect("t", 33))
+		if(hasUpgrade("t", 32)) funny = funny.mul(upgradeEffect("t", 32))
+		if(hasUpgrade("t", 31)) funny = funny.mul(3)
+		if(hasUpgrade("t", 42)) funny = funny.mul(9)
+		if(hasUpgrade("t", 51)) funny = funny.mul(buyableEffect("c", 11))
+		if(hasUpgrade("t", 41)) funny = funny.pow(buyableEffect("t", 11))
+		if(hasUpgrade("t", 54)) funny = funny.pow(layers.c.chaoticEffect())
 		if(hasMilestone("t", 0)) player.t.realPoints = player.t.realPoints.add(funny)
 	},
-	tabFormat: ["main-display", "prestige-button", "resource-display", ["display-text", function() {return player.t.realPoints.gt(0) && hasUpgrade("t", 22) ? "You have "+format(player.t.realPoints)+" enlightment points, enhancing \"Infinitish Boost\", \"Shenanigans Power\", \"Nothing Is Eternal\" and \"Impatience-inator-inator\" by x"+format(layers.t.enlightedEffect()) : player.t.realPoints.gt(0) && hasUpgrade("t", 21) ? "You have "+format(player.t.realPoints)+" enlightment points, enhancing \"Infinitish Boost\" and \"Shenanigans Power\" by x"+format(layers.t.enlightedEffect()) : player.t.realPoints.gt(0) ? "You have "+format(player.t.realPoints)+" enlightment points, enhancing \"Infinitish Boost\" by x"+format(layers.t.enlightedEffect()) : ""}], "blank", "milestones", "upgrades"],
+	tabFormat: ["main-display", "prestige-button", "resource-display", ["display-text", function() {return player.t.realPoints.gt(0) && hasUpgrade("t", 31) ? "You have "+format(player.t.realPoints)+" enlightment points, enhancing \"Infinitish Boost\", \"Shenanigans Power\", \"Nothing Is Eternal\" and \"Impatience-inator-inator\" by x"+format(layers.t.enlightedEffect())+"<br>In addition, it also boosts \"Box Of \"What the hell is this?\" Biscuits\" by x"+format(layers.t.enlightedEffect())+" /"+format(layers.t.enlightedEffect()) : player.t.realPoints.gt(0) && hasUpgrade("t", 22) ? "You have "+format(player.t.realPoints)+" enlightment points, enhancing \"Infinitish Boost\", \"Shenanigans Power\", \"Nothing Is Eternal\" and \"Impatience-inator-inator\" by x"+format(layers.t.enlightedEffect()) : player.t.realPoints.gt(0) && hasUpgrade("t", 21) ? "You have "+format(player.t.realPoints)+" enlightment points, enhancing \"Infinitish Boost\" and \"Shenanigans Power\" by x"+format(layers.t.enlightedEffect()) : player.t.realPoints.gt(0) ? "You have "+format(player.t.realPoints)+" enlightment points, enhancing \"Infinitish Boost\" by x"+format(layers.t.enlightedEffect()) : ""}], "blank", "milestones", "buyables", "blank", "upgrades"],
 	prestigeButtonText() {return "Reject bullshit, become transcended<br/><br/>Requirement: "+format(tmp.t.nextAt)+" nothings"},
     color: "#fefbaa",
-	effect() {return player.t.points.gte(1) ? player.t.points.pow(player.t.points) : new Decimal(0)},
+	effect() {return player.t.points.gte(1) && hasUpgrade("t", 55) ? player.t.points.pow(player.t.points) : player.t.points.gte(1) ? player.t.points.pow(2) : new Decimal(0)},
 	enlightedEffect() {return player.t.realPoints.add(10).log(10)},
 	effectDescription() {return "increasing enlightment points's gain by x"+format(layers.t.effect())},
-    requires() {return player.c.unlocked ? new Decimal(308).pentate(2) : new Decimal(2).pow(1024)}, // Can be a function that takes requirement increases into account
+    requires() {return player.c.unlocked && !hasUpgrade("t", 32) && !hasUpgrade("c", 32) ? new Decimal(308).pentate(2) : new Decimal(2).pow(1024)}, // Can be a function that takes requirement increases into account
     resource() {return player.t.points.gte(2) ? "Transcendence Levels" : "Transcendence Level"}, // Name of prestige currency
     baseResource: "nothings", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -1365,10 +1551,48 @@ addLayer("t", {
 			effectDescription() {return "Begin the production of enlightment points. Also keeps all Impatience upgrades on Trascendence reset."},
 			done() { return player.t.points.gte(1) }
 		},
+		1: {
+			requirementDescription: "3 Transcendence Levels",
+			effectDescription() {return "Trascendence reset no longer resets Impatience layer."},
+			done() { return player.t.points.gte(3) }
+		},
+		2: {
+			requirementDescription: "4 Transcendence Levels",
+			effectDescription() {return "Trascendence reset no longer resets Shenanigans challenges completion.."},
+			done() { return player.t.points.gte(4) }
+		},
+		3: {
+			requirementDescription: "6 Transcendence Levels",
+			effectDescription() {return "Trascendence reset resets nothing."},
+			done() { return player.t.points.gte(6) }
+		},
+	},
+	buyables: {
+		rows: 1,
+		cols: 1,
+		11: {
+			cost() { let cost = new Decimal(1).mul(10).pow(player.t.buyables[11])
+				     if(player.t.buyables[11].gte(32)) cost = cost.pow(2)
+					 if(player.t.buyables[11].gte(746)) cost = cost.pow(buyableEffect("t", 11))
+				     return cost },
+			effect() { let eff = new Decimal(1).add(player.t.buyables[11]/(25))
+					   if(hasUpgrade("t", 44)) eff = eff.add(player.t.buyables[11]/(625))
+					   if(hasUpgrade("t", 52)) eff = eff.pow(1.2)
+					   if(player.t.buyables[11].gte(746)) eff = new Decimal(64)
+				       return eff },
+			title: "Transcended Exponent",
+			display() { return player.t.buyables[11].gte(746) ? "Exponents enlightment points's gain after all additions multiplications. Simple as that.<br>Amount: "+formatWhole(player.t.buyables[11])+"<br/>Cost: "+format(this.cost())+" enlightment points<br/>Currently: ^"+formatWhole(this.effect())+"<br><br>[HARDCAPPED IN BOTH WAYS]<br>-Holy Broly" : "Exponents enlightment points's gain after all additions multiplications. Simple as that.<br>Amount: "+formatWhole(player.t.buyables[11])+"<br/>Cost: "+format(this.cost())+" enlightment points<br/>Currently: ^"+format(this.effect()) },
+			canAfford() { return player.t.realPoints.gte(this.cost()) },
+			buy() {
+				player.t.realPoints = player.t.realPoints.sub(this.cost())
+				player.t.buyables[11] = player.t.buyables[11].add(1)
+			},
+			unlocked() {return hasUpgrade("t", 41)}
+			}
 	},
 	upgrades: {
-		rows: 2,
-		cols: 2,
+		rows: 6,
+		cols: 5,
 		11: {
 			title: "Self-Enlightment",
 			description() {return "Boosts enlightment points's gain by the magnitude of enlightment points"},
@@ -1399,11 +1623,134 @@ addLayer("t", {
 			cost: new Decimal(918),
 			unlocked() {return player.t.upgrades.length >= 1}
 		},
+		31: {
+			title: "Transcended Reference",
+			description() {return "yes, this is jojo reference.<br>it boosts your enlightment points's gain by 3x and they enhance \"B.O.\"W.T.H.I.T?\"B.\""},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(9297.5),
+			unlocked() {return player.t.upgrades.length >= 3}
+		},
+		32: {
+			title: "Chaospotence",
+			description() {return "Boosts enlightment points's gain by the amount of chaotic energies and Chaos layer acts as if you never unlocked Trascended layer in the first place"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			effect() {return player.c.chaoticPoints.add(10).log(10)},
+			effectDisplay() {return "x"+format(this.effect())},
+			cost: new Decimal(4497.5),
+			unlocked() {return player.t.upgrades.length >= 3}
+		},
+		33: {
+			title: "Timewall Breaker",
+			description() {return "Boosts enlightment points's gain by the amount of Transcended Levels you have"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			effect() {return player.t.points.add(1)},
+			effectDisplay() {return "x"+format(this.effect())},
+			cost: new Decimal(2098),
+			unlocked() {return player.t.upgrades.length >= 3}
+		},
+		41: {
+			title: "Buy... Able?",
+			description() {return "Unlocks Transcendence buyable"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(28919),
+			unlocked() {return player.t.upgrades.length >= 6}
+		},
+		42: {
+			title: "Excited.com",
+			description() {return "Boosts enlightment points gain based on how many symbols there are in the world \"Bored.com\""},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(455820),
+			unlocked() {return player.t.upgrades.length >= 6}
+		},
+		43: {
+			title: "IT'S PEANUT BUTTER BISCUIT TIME!!!",
+			description() {return "\"Box Of \"What the hell is this?\" Biscuits\" includes Transcended upgrades as well"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(3815508),
+			unlocked() {return player.t.upgrades.length >= 6}
+		},
+		44: {
+			title: "imagine having good boosts lmao",
+			description() {return "\"Transcended Exponent\"'s base effect is 0.0016 better"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(6461860),
+			unlocked() {return player.t.upgrades.length >= 6}
+		},
+		51: {
+			title: "Twitch's Awakening",
+			description() {return "\"Chaotic Dumpster\" boosts enlightment points's gain"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(3000000000000000000000000000),
+			unlocked() {return player.t.upgrades.length >= 10}
+		},
+		52: {
+			title: "Chaotic Exponent... Wait-",
+			description() {return "Exponents \"Transcended Exponent\" by 1.2"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(900000000000000000000),
+			unlocked() {return player.t.upgrades.length >= 10}
+		},
+		53: {
+			title: "Corruption",
+			description() {return "\"Transcended Exponent\" exponents nothing's gain at reduced rate"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			effect() {return buyableEffect("t", 11).root(4.5)},
+			effectDisplay() {return "^"+format(this.effect())},
+			cost: new Decimal(12000000000000000),
+			unlocked() {return player.t.upgrades.length >= 10}
+		},
+		54: {
+			title: "Bootleg Chaos",
+			description() {return "Chaotic energies's first effect exponents enlightment points's gain"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(6000000000000),
+			unlocked() {return player.t.upgrades.length >= 10}
+		},
+		55: {
+			title: "Timewall Breaker DX: Director Cut",
+			description() {return "Transcended Level's effect formula is better"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(1086457905),
+			unlocked() {return player.t.upgrades.length >= 10}
+		},
+		61: {
+			title: "Circle Constriction",
+			description() {return "Decreases the 5th Square Expansion price down to 877"},
+			currencyDisplayName: "enlightment points",
+            currencyInternalName: "realPoints",
+            currencyLayer: "t",
+			cost: new Decimal(10).pow(3200),
+			unlocked() {return hasAchievement("a", 52)}
+		},
 	},
 	base: 833333333333333.33333333333333333,
     exponent: 2, // Prestige currency exponent
     row: 1, // Row the layer is in on the tree (0 is the first row)
-	branches: ["s"],
+	branches: ["s", "c", "i"],
     hotkeys: [
         {key: "t", description: "T: Reset for Transcendence", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
