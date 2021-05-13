@@ -12,12 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3 [1/2]",
+	num: "0.3 [2/2]",
 	name: "The moment you all have been waiting for",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.3: The moment you all have been waiting for</h3><br>
+		[1/2]<br>
 		- Updated TMT from 2.π to 2.5.2.1
 		- NerfBusters is now only purchasable with at least one Impatience-inator<br>
 		- Chaos and Transcendence layers are now functionable<br>
@@ -28,6 +29,15 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Five more achievements (6 more achievements will be added layer)<br>
 		- Even more shitposts, memes and (JOJO) references<br>
 		- Still no 5th Square Expansion<br><br>
+		[2/2]<br>
+		- 6 more achivements were added in, as promised<br>
+		- Transcended is now connected to Impatience and both 2nd row layers are connected to each other<br>
+		- 19 more upgrades were added in (E P I C)<br>
+		- Even more of electric boogaloo with unexpected ending and gimmicks<br>
+		- You still can't get 5th Square Expansion and I swear to god if you tell me that it's supposed to drop down 1 Shenanigans more, then guess what? 5th Square Expansion doesn't exist.<br><br>
+		It does not exist.<br><br>
+		It does not exist.<br><br>
+		It does not exist.<br><br><br>
 		v0.2.1: haha shitpost go brrrrrrrrrrrrrrrr<br>
 		- Rebalanced early-late game (Reworked 2nd Impatience buyable)<br>
 		- ???<br><br>
@@ -50,7 +60,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- But seriously, there's 3 "layers" in total, craptons of upgrades and challenges for v0.1.<br>
 		- idk what else to say about the mod, that was just released.`
 
-let winText = `Congratulations! You have reached the end and beaten this game. However, you've only reached the halfway point...`
+let winText = `Congratulations! You have reached the end and beaten this game. Hope you enjoyed reloading the page over, and over, and over again.`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -71,10 +81,12 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1/60)
-	if(hasChallenge("s", 11)) gain = gain.mul(60)
-	if(hasChallenge("s", 12)) gain = gain.mul(60)
-	if(hasChallenge("s", 21)) gain = gain.mul(60)
-	if(hasChallenge("s", 22)) gain = gain.mul(60)
+	let challengeReward = new Decimal(60)
+	if(hasUpgrade("c", 31)) challengeReward = new Decimal(3600)
+	if(hasChallenge("s", 11)) gain = gain.mul(challengeReward)
+	if(hasChallenge("s", 12)) gain = gain.mul(challengeReward)
+	if(hasChallenge("s", 21)) gain = gain.mul(challengeReward)
+	if(hasChallenge("s", 22)) gain = gain.mul(challengeReward)
 	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(player.i.points.add(10).log(10)).mul(player.t.points.add(3).log(3)).mul(player.t.realPoints.add(10).log(10)).mul(player.c.points.add(3).log(3)).mul(player.c.chaoticPoints.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
 	if(hasAchievement("a", 11)) gain = gain.mul(6)
 	if(hasAchievement("a", 13)) gain = gain.mul(funnyAchievementMultiplier)
@@ -88,7 +100,11 @@ function getPointGen() {
 	if(layers.i.layerShown() == true) gain = gain.mul(layers.i.effect())
 	if(gain.gte(1)) gain = gain.pow(player.se.points.add(1))
 	if(hasUpgrade("c", 11)) gain = gain.mul(new Decimal(100).add(layers.c.upgrades[11].effect()).div(100))
+	gain = gain.mul(buyableEffect("c", 11))
+	if(hasUpgrade("t", 53)) gain = gain.pow(buyableEffect("t", 11).root(4.5))
 	if(hasUpgrade("c", 13)) gain = gain.pow(layers.c.chaoticEffect2())
+	if(hasUpgrade("c", 33)) gain = gain.pow(1.102)
+	if(hasUpgrade("c", 51)) gain = gain.mul(new Decimal(2).pow(1024))
 	if(inChallenge("s", 11)) gain = gain.div(7560)
 	let shitpostPower = new Decimal(69420).pow(player.s3.secretPoints.add(1).pow(player.s3.secretPoints.add(1)))
 	if(hasUpgrade("s3", 61)) shitpostPower = shitpostPower.pow(69420).pow(player.s3.topSecretPoints)
@@ -109,7 +125,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return (hasMilestone("c", 2) && player.c.upgrades.length >= 9) || (player.t.points.gte(2) && player.t.upgrades.length >= 3) && player.a.achievements.length >= 22
+	return hasUpgrade("t", 61)
 }
 
 
