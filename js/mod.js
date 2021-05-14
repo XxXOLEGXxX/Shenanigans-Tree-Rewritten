@@ -87,7 +87,7 @@ function getPointGen() {
 	if(hasChallenge("s", 12)) gain = gain.mul(challengeReward)
 	if(hasChallenge("s", 21)) gain = gain.mul(challengeReward)
 	if(hasChallenge("s", 22)) gain = gain.mul(challengeReward)
-	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(player.i.points.add(10).log(10)).mul(player.t.points.add(3).log(3)).mul(player.t.realPoints.add(10).log(10)).mul(player.c.points.add(3).log(3)).mul(player.c.chaoticPoints.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
+	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(new Decimal(player.timePlayed).add(1).log(60)).mul(player.i.points.add(10).log(10)).mul(player.t.points.add(3).log(3)).mul(player.t.realPoints.add(10).log(10)).mul(player.c.points.add(3).log(3)).mul(player.c.chaoticPoints.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
 	if(hasAchievement("a", 11)) gain = gain.mul(6)
 	if(hasAchievement("a", 13)) gain = gain.mul(funnyAchievementMultiplier)
 	if(hasUpgrade("s", 11)) gain = gain.mul(layers.s.upgrades[11].effect2()).mul(layers.s.upgrades[11].effect())
