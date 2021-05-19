@@ -26,7 +26,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Lowered 30th achievement's requirement<br>
 		- Removed Transcended Exponent's hardcap and made 30th achievement "better"<br>
 		- Also increased some of Chaos's and Transcendence's upgrades's cost<br>
-		- Now you can buy NerfBusters before buying first Impatience-inator, so long as you have 2 Impatiences to spend 
+		- Now you can buy NerfBusters before buying first Impatience-inator, so long as you have 2 Impatiences to spend<br><br>
 	<h3>v0.3: The moment you all have been waiting for</h3><br>
 		[1/2]<br>
 		- Updated TMT from 2.π to 2.5.2.1
