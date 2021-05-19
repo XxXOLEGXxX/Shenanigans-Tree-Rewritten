@@ -12,11 +12,19 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3 [2/2]",
-	name: "The moment you all have been waiting for",
+	num: "0.3.1",
+	name: "god OOFing damn it let me take a break for 5 hours",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+		v0.3.1: god OOFing damn it let me take a break for 5 hours<br>
+		- Fixed some grammatical errors
+		- Increased most Shenanigans upgrades's cost<br>
+		- Increased Chaos and Transcendence layers's base<br>
+		- Nerfed NerfBusters (rip Nerf Meta)<br>
+		- Removed Transcended Exponent's hardcap and made 30th achievement "better"<br>
+		- Also increased some of Chaos's and Transcendence's upgrades's cost<br>
+		- Now you can buy NerfBusters before buying first Impatience-inator, so long as you have 2 Impatiences to spend 
 	<h3>v0.3: The moment you all have been waiting for</h3><br>
 		[1/2]<br>
 		- Updated TMT from 2.π to 2.5.2.1
@@ -87,7 +95,7 @@ function getPointGen() {
 	if(hasChallenge("s", 12)) gain = gain.mul(challengeReward)
 	if(hasChallenge("s", 21)) gain = gain.mul(challengeReward)
 	if(hasChallenge("s", 22)) gain = gain.mul(challengeReward)
-	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(new Decimal(player.timePlayed).add(1).log(60)).mul(player.i.points.add(10).log(10)).mul(player.t.points.add(3).log(3)).mul(player.t.realPoints.add(10).log(10)).mul(player.c.points.add(3).log(3)).mul(player.c.chaoticPoints.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
+	let funnyAchievementMultiplier = new Decimal(1).mul(player.s.points.add(1).root(3)).mul(new Decimal(player.timePlayed).add(60).log(60)).mul(player.i.points.add(10).log(10)).mul(player.t.points.add(3).log(3)).mul(player.t.realPoints.add(10).log(10)).mul(player.c.points.add(3).log(3)).mul(player.c.chaoticPoints.add(10).log(10)).mul(player.se.points.add(1).root(2)).mul(player.points.add(1).root(1024))
 	if(hasAchievement("a", 11)) gain = gain.mul(6)
 	if(hasAchievement("a", 13)) gain = gain.mul(funnyAchievementMultiplier)
 	if(hasUpgrade("s", 11)) gain = gain.mul(layers.s.upgrades[11].effect2()).mul(layers.s.upgrades[11].effect())
@@ -101,11 +109,11 @@ function getPointGen() {
 	if(gain.gte(1)) gain = gain.pow(player.se.points.add(1))
 	if(hasUpgrade("c", 11)) gain = gain.mul(new Decimal(100).add(layers.c.upgrades[11].effect()).div(100))
 	gain = gain.mul(buyableEffect("c", 11))
-	if(hasUpgrade("t", 53)) gain = gain.pow(buyableEffect("t", 11).root(4.5))
+	if(hasUpgrade("t", 53)) gain = gain.pow(buyableEffect("t", 11).root(5))
 	if(hasUpgrade("c", 13)) gain = gain.pow(layers.c.chaoticEffect2())
-	if(hasUpgrade("c", 33)) gain = gain.pow(1.102)
+	if(hasUpgrade("c", 33)) gain = gain.pow(1.10)
 	if(hasUpgrade("c", 51)) gain = gain.mul(new Decimal(2).pow(1024))
-	if(inChallenge("s", 11)) gain = gain.div(7560)
+	if(inChallenge("s", 11)) gain = gain.div(362880)
 	let shitpostPower = new Decimal(69420).pow(player.s3.secretPoints.add(1).pow(player.s3.secretPoints.add(1)))
 	if(hasUpgrade("s3", 61)) shitpostPower = shitpostPower.pow(69420).pow(player.s3.topSecretPoints)
 	if(layers.s2.layerShown() == true) {for (var i = 1; i < player.s2.secretPoints; i++) {		
