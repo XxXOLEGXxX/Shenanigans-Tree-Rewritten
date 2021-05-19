@@ -21,7 +21,9 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Fixed some grammatical errors
 		- Increased most Shenanigans upgrades's cost<br>
 		- Increased Chaos and Transcendence layers's base<br>
-		- Nerfed NerfBusters (rip Nerf Meta)<br>
+		- Nerfed "Shenanigans Upgrade", "A Little Exponent Won't Hurt... I swear to the Jevil himself, it won't inflate like \"NerfBusters\" before the rework!" and NerfBusters (rip Nerf Meta)<br>
+		- Increased "Adventure Jevilist"'s requirement<br>
+		- Lowered 30th achievement's requirement<br>
 		- Removed Transcended Exponent's hardcap and made 30th achievement "better"<br>
 		- Also increased some of Chaos's and Transcendence's upgrades's cost<br>
 		- Now you can buy NerfBusters before buying first Impatience-inator, so long as you have 2 Impatiences to spend 
