@@ -12,11 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.1",
+	num: "0.3.1.1",
 	name: "god OOFing damn it let me take a break for 5 hours",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+		v0.3.1.1: it doesn't even deserve a title<br>
+		- Last Transcendence upgrade's cost has been decreased down to e3500, but it'll increase the more enlightment points you have<br><br>
 		v0.3.1: god OOFing damn it let me take a break for 5 hours<br>
 		- Fixed some grammatical errors
 		- Increased most Shenanigans upgrades's cost<br>
