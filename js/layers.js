@@ -1743,7 +1743,7 @@ addLayer("t", {
             currencyInternalName: "realPoints",
             currencyLayer: "t",
 			cost() {let cost = new Decimal(10).pow(3500)
-					if(player.points.gte(cost)) cost = player.points
+					if(player.t.realPoints.gte(cost)) cost = player.t.realPoints
 					return cost},
 			unlocked() {return hasAchievement("a", 52)}
 		},
