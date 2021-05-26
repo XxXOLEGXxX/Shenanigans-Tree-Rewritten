@@ -12,11 +12,19 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.1.1",
-	name: "god OOFing damn it let me take a break for 5 hours",
+	num: "1.0",
+	name: "IT'S TIME TO STOP!",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h2>v1.0: IT'S TIME TO STOP!</h2><br>
+		This is the last major update ST:R will receive due the fact there's little I can do without either reworking, rebalancing or even reinventing stuff, so... Yeah, this is as far as ST:R can go without looking like a boring mess ST is<br>
+		- "Infinitish Boost" displays the effets correctly
+		- You CAN get 5th Sqaure Expansion now... But at what cost
+		- Six more achievements
+		- Five more Shenanigans upgrades
+		- One more Impatience buyable
+		- Ye olde goodie Shenanigans challenge from ST has been added in
 		v0.3.1.1: it doesn't even deserve a title<br>
 		- Last Transcendence upgrade's cost has been decreased down to e3500, but it'll increase the more enlightment points you have<br><br>
 		v0.3.1: god OOFing damn it let me take a break for 5 hours<br>
@@ -72,7 +80,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- But seriously, there's 3 "layers" in total, craptons of upgrades and challenges for v0.1.<br>
 		- idk what else to say about the mod, that was just released.`
 
-let winText = `Congratulations! You have reached the end and beaten this game. Hope you enjoyed reloading the page over, and over, and over again.`
+let winText = `Congratulations! You have reached the end and beaten this game. This mod will most likely receive few balance, QoL updates and bugfixes, but there'll not be anymore content.`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -110,7 +118,8 @@ function getPointGen() {
 	if(hasUpgrade("s", 25) && !inChallenge("s", 12) && !inChallenge("s", 22)) gain = gain.mul(262144)
 	if(hasUpgrade("s", 55) && !inChallenge("s", 12) && !inChallenge("s", 22)) gain = gain.mul(62)
 	if(layers.i.layerShown() == true) gain = gain.mul(layers.i.effect())
-	if(gain.gte(1)) gain = gain.pow(player.se.points.add(1))
+	if(gain.gte(1) && !inChallenge("s", 31) && !hasChallenge("s", 31)) gain = gain.pow(player.se.points.add(1))
+	if(gain.gte(1) && !inChallenge("s", 31) && hasChallenge("s", 31)) gain = gain.pow(11)
 	if(hasUpgrade("c", 11)) gain = gain.mul(new Decimal(100).add(layers.c.upgrades[11].effect()).div(100))
 	gain = gain.mul(buyableEffect("c", 11))
 	if(hasUpgrade("t", 53)) gain = gain.pow(buyableEffect("t", 11).root(5))
@@ -123,6 +132,7 @@ function getPointGen() {
 	if(layers.s2.layerShown() == true) {for (var i = 1; i < player.s2.secretPoints; i++) {		
 										gain = gain.pow(shitpostPower)
 	}}
+	if(inChallenge("s", 31)) gain = gain.pentate(new Decimal(1).div(new Decimal(10).pow(100).div(player.s.godKiller)))
 	return gain
 }
 
@@ -132,7 +142,8 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	function() {return player.points.gte(new Decimal(308).pentate(2)) ? "(Oh shit/sec)" : ""}
+	function() {return player.points.gte(new Decimal(308).pentate(2)) ? "(Oh shit/sec)" : ""},
+	function() {return hasAchievement("a", 66) && inChallenge("s", 31) ? "Challenge Slayer's effect: /"+format(player.s.godKiller) : ""}
 ]
 
 // Determines when the game "ends"
