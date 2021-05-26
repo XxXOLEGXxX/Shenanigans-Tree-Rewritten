@@ -941,6 +941,7 @@ addLayer("i", {
 				player.i.points = player.i.points.sub(this.cost())
 				player.i.buyables[13] = player.i.buyables[13].add(1)
 			},
+			unlocked() {return hasAchievement("a", 63)},
 			style() { return {
 				"width": "302px",
 				}
