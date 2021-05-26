@@ -1618,10 +1618,10 @@ addLayer("c", {
 																	       if(player.c.score.gt(1) && player.c.score.lt(19)) {player.c.score = player.c.score.sub(1)
 																									 player.c.scoreEffect = player.c.scoreEffect.sub(0.205)
 																			       					 player.c.requirement = player.c.requirement.sub(5)}
-																		   if(player.c.score.gte(19)){player.c.score = new Decimal(1)
+				}
+				if(player.c.score.gte(19)){player.c.score = new Decimal(1)
 																									  player.c.scoreEffect = new Decimal(0)
 																									  player.c.requirement = new Decimal(10)}
-				}
 			},
 			unlocked() {return hasUpgrade("c", 42)},
 			style() { return {
