@@ -1609,6 +1609,9 @@ addLayer("c", {
 			title() {return player.c.score.gte(19) ? "I dare you, you funkin smartass wannabe": "Press the button to upgrade"},
 			canAfford() { return true },
 			buy() {
+				if(player.c.score.gte(19)){player.c.score = new Decimal(1)
+																									  player.c.scoreEffect = new Decimal(0)
+																									  player.c.requirement = new Decimal(10)}
 				if(player.c.stupidProgress.gte(player.c.requirement) && player.c.score.lt(19)) {player.c.stupidProgress = new Decimal(0)
 																	   if(player.c.score.gte(18)) player.c.stupidProgress = new Decimal(100)
 																	   player.c.score = player.c.score.add(1)
@@ -1619,9 +1622,6 @@ addLayer("c", {
 																									 player.c.scoreEffect = player.c.scoreEffect.sub(0.205)
 																			       					 player.c.requirement = player.c.requirement.sub(5)}
 				}
-				if(player.c.score.gte(19)){player.c.score = new Decimal(1)
-																									  player.c.scoreEffect = new Decimal(0)
-																									  player.c.requirement = new Decimal(10)}
 			},
 			unlocked() {return hasUpgrade("c", 42)},
 			style() { return {
