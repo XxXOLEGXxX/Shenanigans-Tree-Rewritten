@@ -15,7 +15,6 @@ addLayer("c", {
             beep: false,
             thingy: "pointy",
             otherThingy: 10,
-            drop: "drip",
         }},
         color: "#4BDC13",
         requires: new Decimal(10), // Can be a function that takes requirement increases into account
@@ -96,10 +95,7 @@ addLayer("c", {
                 rewardDisplay() { return format(this.rewardEffect())+"x" },
                 countsAs: [12, 21], // Use this for if a challenge includes the effects of other challenges. Being in this challenge "counts as" being in these.
                 rewardDescription: "Says hi",
-                onComplete() {console.log("hiii")}, // Called when you successfully complete the challenge
-                onEnter() {console.log("So challenging")},
-                onExit() {console.log("Sweet freedom!")},
-
+                onComplete() {console.log("hiii")} // Called when you complete the challenge
             },
         }, 
         upgrades: {
@@ -109,7 +105,6 @@ addLayer("c", {
                 description: "Gain 1 Point every second.",
                 cost: new Decimal(1),
                 unlocked() { return player[this.layer].unlocked }, // The upgrade is only visible when this is true
-                branches: [12]
             },
             12: {
                 description: "Point generation is faster based on your unspent Lollipops.",
@@ -223,11 +218,9 @@ addLayer("c", {
         microtabs: {
             stuff: {
                 first: {
-                    content: ["upgrades", ["display-text", function() {return "confirmed<br>" + player.c.drop}], ["drop-down", ["drop", ["drip", "drop"]]]]
+                    content: ["upgrades", ["display-text", function() {return "confirmed"}]]
                 },
                 second: {
-                    embedLayer: "f",
-
                     content: [["upgrade", 11],
                             ["row", [["upgrade", 11], "blank", "blank", ["upgrade", 11],]],
                         
@@ -292,7 +285,7 @@ addLayer("c", {
 
             },
         },
-        
+
         // Optional, lets you format the tab yourself by listing components. You can create your own components in v.js.
         tabFormat: {
             "main tab": {
@@ -302,11 +295,11 @@ addLayer("c", {
                     ["main-display",
                     "prestige-button", "resource-display",
                     ["blank", "5px"], // Height
-                    ["raw-html", function() {return "<button onclick='console.log(`yeet`); makeParticles(textParticle)'>'HI'</button>"}],
+                    ["raw-html", function() {return "<button onclick='console.log(`yeet`)'>'HI'</button>"}],
                     ["display-text", "Name your points!"],
                     ["text-input", "thingy"],
                     ["display-text",
-                        function() {return 'I have ' + format(player.points) + ' ' + player[this.layer].thingy + ' points!'},
+                        function() {return 'I have ' + format(player.points) + ' ' + player.c.thingy + ' points!'},
                         {"color": "red", "font-size": "32px", "font-family": "Comic Sans MS"}],
                     "h-line", "milestones", "blank", "upgrades", "challenges"],
                 glowColor: "blue",
@@ -317,7 +310,7 @@ addLayer("c", {
                 style() {return  {'background-color': '#222222'}},
                 buttonStyle() {return {'border-color': 'orange'}},
                 content:[ 
-                    "buyables", "blank",
+                    ["buyables", ""], "blank",
                     ["row", [
                         ["toggle", ["c", "beep"]], ["blank", ["30px", "10px"]], // Width, height
                         ["display-text", function() {return "Beep"}], "blank", ["v-line", "200px"],
@@ -330,8 +323,6 @@ addLayer("c", {
                     ["display-image", "discord.png"],],
             },
             jail: {
-                style() {return  {'background-color': '#222222'}},
-
                 content: [
                     ["infobox", "coolInfo"],
                     ["bar", "longBoi"], "blank",
@@ -354,8 +345,7 @@ addLayer("c", {
                     ["raw-html", function() {return "<h1> C O N F I R M E D </h1>"}], "blank",
                     ["microtabs", "stuff", {'width': '600px', 'height': '350px', 'background-color': 'brown', 'border-style': 'solid'}],
                     ["display-text", "Adjust how many points H gives you!"],
-                    ["slider", ["otherThingy", 1, 30]], "blank", ["upgrade-tree", [[11], 
-                    [12, 22, 22, 11]]]
+                    ["slider", ["otherThingy", 1, 30]],
                 ]
             }
 
@@ -374,14 +364,13 @@ addLayer("c", {
         },
         tooltip() { // Optional, tooltip displays when the layer is unlocked
             let tooltip = formatWhole(player[this.layer].points) + " " + this.resource
-            if (player[this.layer].buyables[11].gt(0)) tooltip += "<br><i><br><br><br>" + formatWhole(player[this.layer].buyables[11]) + " Exhancers</i>"
+            if (player[this.layer].buyables[11].gt(0)) tooltip += "<br><i>" + formatWhole(player[this.layer].buyables[11]) + " Exhancers</i>"
             return tooltip
         },
         shouldNotify() { // Optional, layer will be highlighted on the tree if true.
                          // Layer will automatically highlight if an upgrade is purchasable.
             return (player.c.buyables[11] == 1)
         },
-        marked: "discord.png",
         resetDescription: "Melt your points into ",
 })
 
@@ -389,15 +378,6 @@ addLayer("c", {
 
 // This layer is mostly minimal but it uses a custom prestige type and a clickable
 addLayer("f", {
-    infoboxes:{
-        coolInfo: {
-            title: "Lore",
-            titleStyle: {'color': '#FE0000'},
-            body: "DEEP LORE!",
-            bodyStyle: {'background-color': "#0000EE"}
-        }
-    },
-
     startData() { return {
         unlocked: false,
         points: new Decimal(0),
@@ -413,8 +393,7 @@ addLayer("f", {
     exponent: 0.5,
     base: 3,
     roundUpCost: true,
-    canBuyMax() {return false},
-    //directMult() {return new Decimal(player.c.otherThingy)},
+    canBuyMax() {return hasAchievement('a', 13)},
 
     row: 1,
     layerShown() {return true}, 
@@ -470,7 +449,6 @@ addLayer("f", {
                         player[this.layer].clickables[this.id] = "Maybe that's a bit too far..."
                         break;                        
                     case "Maybe that's a bit too far...":
-                        makeParticles(coolParticle, 4)
                         player[this.layer].clickables[this.id] = "Borkened..."
                         break;
                     default:
@@ -540,72 +518,5 @@ addLayer("a", {
                 onComplete() {console.log("Bork bork bork!")}
             },
         },
-        midsection: ["grid", "blank"],
-        grid: {
-            maxRows: 3,
-            rows: 2,
-            cols: 2,
-            getStartData(id) {
-                return id
-            },
-            getUnlocked(id) { // Default
-                return true
-            },
-            getCanClick(data, id) {
-                return player.points.eq(10)
-            },
-            getStyle(data, id) {
-                return {'background-color': '#'+ (data*1234%999999)}
-            },
-            onClick(data, id) { // Don't forget onHold
-                player[this.layer].grid[id]++
-            },
-            getTitle(data, id) {
-                return "Gridable #" + id
-            },
-            getDisplay(data, id) {
-                return data
-            },
-        },
-    },
+    }, 
 )
-
-const coolParticle = {
-    image:"options_wheel.png",
-    spread: 20,
-    gravity: 2,
-    time: 3,
-    rotation (id) {
-        return 20 * (id - 1.5) + (Math.random() - 0.5) * 10
-    },
-    dir() {
-        return (Math.random() - 0.5) * 10
-    },
-    speed() {
-        return (Math.random() + 1.2) * 8 
-    },
-    onClick() {
-        console.log("yay")
-    },
-    onMouseOver() {
-        console.log("hi")
-    },
-    onMouseLeave() {
-        console.log("bye")
-    },
-    update() {
-        //this.width += 1
-        //setDir(this, 135)
-    },
-    layer: 'f',
-}
-
-const textParticle = {
-    spread: 20,
-    gravity: 0,
-    time: 3,
-    speed: 0,
-    text: function() { return "<h1 style='color:yellow'>" + format(player.points)},
-    offset: 30,
-    fadeInTime: 1,
-}

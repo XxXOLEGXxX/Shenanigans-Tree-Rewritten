@@ -66,7 +66,7 @@ function setupLayer(layer){
     if (layers[layer].upgrades){
         setRowCol(layers[layer].upgrades)
         for (thing in layers[layer].upgrades){
-            if (isPlainObject(layers[layer].upgrades[thing])){
+            if (!isNaN(thing)){
                 layers[layer].upgrades[thing].id = thing
                 layers[layer].upgrades[thing].layer = layer
                 if (layers[layer].upgrades[thing].unlocked === undefined)
@@ -76,7 +76,7 @@ function setupLayer(layer){
     }
     if (layers[layer].milestones){
         for (thing in layers[layer].milestones){
-            if (isPlainObject(layers[layer].milestones[thing])){
+            if (!isNaN(thing)){
                 layers[layer].milestones[thing].id = thing
                 layers[layer].milestones[thing].layer = layer
                 if (layers[layer].milestones[thing].unlocked === undefined)
@@ -87,7 +87,7 @@ function setupLayer(layer){
     if (layers[layer].achievements){
         setRowCol(layers[layer].achievements)
         for (thing in layers[layer].achievements){
-            if (isPlainObject(layers[layer].achievements[thing])){
+            if (!isNaN(thing)){
                 layers[layer].achievements[thing].id = thing
                 layers[layer].achievements[thing].layer = layer
                 if (layers[layer].achievements[thing].unlocked === undefined)
@@ -98,15 +98,13 @@ function setupLayer(layer){
     if (layers[layer].challenges){
         setRowCol(layers[layer].challenges)
         for (thing in layers[layer].challenges){
-            if (isPlainObject(layers[layer].challenges[thing])){
+            if (!isNaN(thing)){
                 layers[layer].challenges[thing].id = thing
                 layers[layer].challenges[thing].layer = layer
                 if (layers[layer].challenges[thing].unlocked === undefined)
                     layers[layer].challenges[thing].unlocked = true
                 if (layers[layer].challenges[thing].completionLimit === undefined)
                     layers[layer].challenges[thing].completionLimit = 1
-                else if (layers[layer].challenges[thing].marked === undefined) 
-                    layers[layer].challenges[thing].marked = function() {return maxedChallenge(this.layer, this.id)}
 
             }
         }
@@ -115,24 +113,22 @@ function setupLayer(layer){
         layers[layer].buyables.layer = layer
         setRowCol(layers[layer].buyables)
         for (thing in layers[layer].buyables){
-            if (isPlainObject(layers[layer].buyables[thing])){
+            if (!isNaN(thing)){
                 layers[layer].buyables[thing].id = thing
                 layers[layer].buyables[thing].layer = layer
                 if (layers[layer].buyables[thing].unlocked === undefined)
                     layers[layer].buyables[thing].unlocked = true
+                }
                 layers[layer].buyables[thing].canBuy = function() {return canBuyBuyable(this.layer, this.id)}
                 if (layers[layer].buyables[thing].purchaseLimit === undefined) layers[layer].buyables[thing].purchaseLimit = new Decimal(Infinity)
-        
-            }  
-    
-        }
+        }  
     }
 
     if (layers[layer].clickables){
         layers[layer].clickables.layer = layer
         setRowCol(layers[layer].clickables)
         for (thing in layers[layer].clickables){
-            if (isPlainObject(layers[layer].clickables[thing])){
+            if (!isNaN(thing)){
                 layers[layer].clickables[thing].id = thing
                 layers[layer].clickables[thing].layer = layer
                 if (layers[layer].clickables[thing].unlocked === undefined)
@@ -160,14 +156,6 @@ function setupLayer(layer){
         }  
     }
     
-    if (layers[layer].grid) {
-        layers[layer].grid.layer = layer
-        if (layers[layer].grid.getUnlocked === undefined)
-            layers[layer].grid.getUnlocked = true
-        if (layers[layer].grid.getCanClick === undefined)
-            layers[layer].grid.getCanClick = true
-
-    }
     if (layers[layer].startData) {
         data = layers[layer].startData()
         if (data.best !== undefined && data.showBest === undefined) layers[layer].showBest = true
@@ -177,9 +165,8 @@ function setupLayer(layer){
     if(!layers[layer].componentStyles) layers[layer].componentStyles = {}
     if(layers[layer].symbol === undefined) layers[layer].symbol = layer.charAt(0).toUpperCase() + layer.slice(1)
     if(layers[layer].unlockOrder === undefined) layers[layer].unlockOrder = []
-    if(layers[layer].gainMult === undefined) layers[layer].gainMult = decimalOne
-    if(layers[layer].gainExp === undefined) layers[layer].gainExp = decimalOne
-    if(layers[layer].directMult === undefined) layers[layer].directMult = decimalOne
+    if(layers[layer].gainMult === undefined) layers[layer].gainMult = new Decimal(1)
+    if(layers[layer].gainExp === undefined) layers[layer].gainExp = new Decimal(1)
     if(layers[layer].type === undefined) layers[layer].type = "none"
     if(layers[layer].base === undefined || layers[layer].base <= 1) layers[layer].base = 2
     if(layers[layer].softcap === undefined) layers[layer].softcap = new Decimal("e1e7")
@@ -200,7 +187,7 @@ function setupLayer(layer){
     ROW_LAYERS[row][layer]=layer;
     let position = (layers[layer].position !== undefined ? layers[layer].position : layer)
     
-    if (!isNaN(displayRow) || displayRow < 0) TREE_LAYERS[displayRow].push({layer: layer, position: position})
+    if (!isNaN(displayRow)) TREE_LAYERS[displayRow].push({layer: layer, position: position})
     else OTHER_LAYERS[displayRow].push({layer: layer, position: position})
 
     if (maxRow < layers[layer].displayRow) maxRow = layers[layer].displayRow
