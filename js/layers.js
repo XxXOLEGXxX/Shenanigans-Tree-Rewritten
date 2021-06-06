@@ -277,12 +277,14 @@ addLayer("s", {
 			},
 		61: {
 			title: "it hurts...",
-			description() {return inChallenge("s", 12) || inChallenge("s", 22) ? "acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda" : "Despite the mod getting funky the further you gain shenanigans, it fills you with neat effects.<br>Boosts \"Infinitish Boost\" by the amount of C.o.C.K.'s and Transcendence Levels you currently have."},
+			description() {return inChallenge("s", 12) || inChallenge("s", 22) ? "acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda acamaeda" : "Despite the mod getting funky the further you gain shenanigans, it fills you with neat effects.<br>Boosts \"Infinitish Boost\" by the amount of C.o.C.K.'s and Transcendence Levels you currently have, while removing an ability to manually reset"},
 			effect() {let eff = new Decimal(player.t.points).add(player.c.points).add(1)
 					  return eff},
 			effectDisplay() {return "x"+format(this.effect())},
 			unlocked() {return player.se.points.gte(5)},
-			cost() {return new Decimal(1099).sub(layers.c.effect()).max(0)}
+			cost() {let cost = new Decimal(1091).sub(layers.c.effect()).max(0)
+					if(player.s.points.gte(1001)) cost = player.s.points.add(91).sub(layers.c.effect()).max(0)
+					return cost}
 			},
 		62: {
 			title: "Screw it, we're going by 10's",
@@ -306,7 +308,7 @@ addLayer("s", {
 			title: "I ran out of ideas",
 			description() {return "Unlocks last Shenanigans challenge"},
 			unlocked() {return player.se.points.gte(5)},
-			cost() {return new Decimal(12769).sub(layers.c.effect()).max(0)}
+			cost() {return new Decimal(12799).sub(layers.c.effect()).max(0)}
 			},
 	},
 	challenges: {
@@ -347,9 +349,9 @@ addLayer("s", {
 		31: {
 			name: "The Endgamer's Revengeance",
             challengeDescription: "Pentates your nothings gain by googolth and ignores Square Expansion's second effect (Let's see if you're capable of overinflating it this time).",
-			rewardDescription() {return "Square Expansion now boosts nothing's gain as if you had 10 square expansions"},
+			rewardDescription() {return "???"},
 			currencyDisplayName: "nothings",
-			goal: new Decimal(10).pow(7586),
+			goal: new Decimal(10).pow(10000),
 			unlocked() {return hasUpgrade("s", 65)},
 			style() { return {
 				"width": "616px",
@@ -1728,7 +1730,7 @@ addLayer("t", {
 					   if(hasUpgrade("t", 52)) eff = eff.pow(1.2)
 				       return eff },
 			title: "Transcended Exponent",
-			display() { return "Exponents enlightment points's gain after all additions multiplications. Simple as that.<br>Amount: "+formatWhole(player.t.buyables[11])+"<br/>Cost: "+format(this.cost())+" enlightment points<br/>Currently: ^"+format(this.effect()) },
+			display() { return "Exponents enlightment points's gain after all additions and multiplications. Simple as that.<br>Amount: "+formatWhole(player.t.buyables[11])+"<br/>Cost: "+format(this.cost())+" enlightment points<br/>Currently: ^"+format(this.effect()) },
 			canAfford() { return player.t.realPoints.gte(this.cost()) },
 			buy() {
 				player.t.realPoints = player.t.realPoints.sub(this.cost())

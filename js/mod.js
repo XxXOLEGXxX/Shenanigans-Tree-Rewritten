@@ -1,7 +1,7 @@
 let modInfo = {
 	name: "The Shenanigans Tree: Rewritten",
 	id: "holyfuckingshitisthatshenaniganstree!?!??!?!??!?!??!?!",
-	author: "stupidoleg",
+	author: "Holy Broly#0530 (an idiot sandwich)",
 	pointsName: "nothings",
 	discordName: "Holy Broly#0530",
 	discordLink: "",
@@ -12,19 +12,24 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.0",
-	name: "IT'S TIME TO STOP!",
+	num: "1.0.1",
+	name: "Alright, here's my idea...",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v1.0.1: Alright, here's my idea...</h3><br>
+		- Made it so it was NOT impossible to reach the "Finale" part (via making 26th Shenanigans upgrade cost 1000 Shenanigans or more, depending on how much you have)<br>
+		- Changed CSS a bit<br>
+		- Fixed Changelog itself<br>
+		- Changed several things as well (including The Endgamer's Revengeance)<br><br>
 	<h2>v1.0: IT'S TIME TO STOP!</h2><br>
 		This is the last major update ST:R will receive due the fact there's little I can do without either reworking, rebalancing or even reinventing stuff, so... Yeah, this is as far as ST:R can go without looking like a boring mess ST is<br>
-		- "Infinitish Boost" displays the effets correctly
-		- You CAN get 5th Sqaure Expansion now... But at what cost
-		- Six more achievements
-		- Five more Shenanigans upgrades
-		- One more Impatience buyable
-		- Ye olde goodie Shenanigans challenge from ST has been added in
+		- "Infinitish Boost" displays the effets correctly<br>
+		- You CAN get 5th Sqaure Expansion now... But at what cost<br>
+		- Six more achievements<br>
+		- Five more Shenanigans upgrades<br>
+		- One more Impatience buyable<br>
+		- Ye olde goodie Shenanigans challenge from ST has been added in<br>
 		v0.3.1.1: it doesn't even deserve a title<br>
 		- Last Transcendence upgrade's cost has been decreased down to e3500, but it'll increase the more enlightment points you have<br><br>
 		v0.3.1: god OOFing damn it let me take a break for 5 hours<br>
@@ -119,7 +124,6 @@ function getPointGen() {
 	if(hasUpgrade("s", 55) && !inChallenge("s", 12) && !inChallenge("s", 22)) gain = gain.mul(62)
 	if(layers.i.layerShown() == true) gain = gain.mul(layers.i.effect())
 	if(gain.gte(1) && !inChallenge("s", 31) && !hasChallenge("s", 31)) gain = gain.pow(player.se.points.add(1))
-	if(gain.gte(1) && !inChallenge("s", 31) && hasChallenge("s", 31)) gain = gain.pow(11)
 	if(hasUpgrade("c", 11)) gain = gain.mul(new Decimal(100).add(layers.c.upgrades[11].effect()).div(100))
 	gain = gain.mul(buyableEffect("c", 11))
 	if(hasUpgrade("t", 53)) gain = gain.pow(buyableEffect("t", 11).root(5))
