@@ -19,7 +19,6 @@ let VERSION = {
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v1.0.1: Alright, here's my idea...</h3><br>
 		- Made it so it was NOT impossible to reach the "Finale" part (via making 26th Shenanigans upgrade cost 1000 Shenanigans or more, depending on how much you have)<br>
-		- Changed CSS a bit<br>
 		- Fixed Changelog itself<br>
 		- Changed several things as well (including The Endgamer's Revengeance)<br><br>
 	<h2>v1.0: IT'S TIME TO STOP!</h2><br>
